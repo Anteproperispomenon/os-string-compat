@@ -41,6 +41,9 @@ packages:
 #   commit: e7b331f14bcffb8367cd58fbfc8b40ec7642100a
 #
 # extra-deps: []
+extra-deps:
+# - filepath-1.5.4.0
+# - os-string-2.0.5
 
 # Override default flag values for project packages and extra-deps
 # flags: {}

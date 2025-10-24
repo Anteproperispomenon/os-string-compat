@@ -13,7 +13,9 @@ module System.OsString.Internal.Compat
   , singleton
   , pack
   , fromBytes
+#if MIN_VERSION_os_string(2,0,8)
   , fromShortBytes
+#endif
 
   -- * OsString deconstruction
   , decodeUtf
@@ -116,10 +118,10 @@ import System.OsString.Internal.Types.Compat
 
 import Prelude ()
 
--- These should be the same values as in
+-- These should have the same types as in
 -- System.OsString.Internal.Types.Compat, so
--- it shouldn't be a problem.
-import "os-string" System.OsString
+-- it shouldn't be a problem to use this directly.
+import "os-string" System.OsString.Internal
 
 #else
 
@@ -224,14 +226,6 @@ encodeLE = coerce OS.encodeLE
 decodeLE :: OsString -> IO String
 decodeLE = coerce OS.decodeLE
 
--- | Constructs an @OsString@ from a ShortByteString.
---
--- On windows, this ensures valid UCS-2LE, on unix it is passed unchanged/unchecked.
---
--- Throws 'EncodingException' on invalid UCS-2LE on windows (although unlikely).
-fromShortBytes :: forall (m :: Type -> Type). MonadThrow m => ShortByteString -> m OsString
-fromShortBytes sbs = coerce <$> (OS.fromShortBytes @m sbs)
-
 empty :: OsString
 empty = coerce OS.empty
 
@@ -244,7 +238,7 @@ singleton = coerce OS.singleton
 toChar :: OsChar -> Char
 toChar = coerce OS.toChar
 
--- | /O(n)/ Append a byte/word to the end of a 'OsString'
+-- | /O(n)/ Append a byte/word to the end of an `OsString`
 snoc :: OsString -> OsChar -> OsString
 snoc = coerce OS.snoc
 
@@ -252,49 +246,49 @@ snoc = coerce OS.snoc
 cons :: OsChar -> OsString -> OsString
 cons = coerce OS.cons
 
--- | /O(1)/ Extract the last element of a OsString, which must be finite and non-empty.
+-- | /O(1)/ Extract the last element of an `OsString`, which must be finite and non-empty.
 -- An exception will be thrown in the case of an empty OsString.
 --
 -- This is a partial function, consider using 'unsnoc' instead.
 last :: HasCallStack => OsString -> OsChar
 last = coerce OS.last
 
--- | /O(n)/ Extract the elements after the head of a OsString, which must be non-empty.
+-- | /O(n)/ Extract the elements after the head of an `OsString`, which must be non-empty.
 -- An exception will be thrown in the case of an empty OsString.
 --
 -- This is a partial function, consider using 'uncons' instead.
 tail :: HasCallStack => OsString -> OsString
 tail = coerce OS.tail
 
--- | /O(n)/ Extract the 'head' and 'tail' of a OsString, returning 'Nothing'
+-- | /O(n)/ Extract the 'head' and 'tail' of an `OsString`, returning 'Nothing'
 -- if it is empty.
 uncons :: OsString -> Maybe (OsChar, OsString)
 uncons = coerce OS.uncons
 
--- | /O(1)/ Extract the first element of a OsString, which must be non-empty.
+-- | /O(1)/ Extract the first element of an `OsString`, which must be non-empty.
 -- An exception will be thrown in the case of an empty OsString.
 --
 -- This is a partial function, consider using 'uncons' instead.
 head :: HasCallStack => OsString -> OsChar
 head = coerce OS.head
 
--- | /O(n)/ Return all the elements of a 'OsString' except the last one.
+-- | /O(n)/ Return all the elements of an `OsString` except the last one.
 -- An exception will be thrown in the case of an empty OsString.
 --
 -- This is a partial function, consider using 'unsnoc' instead.
 init :: HasCallStack => OsString -> OsString
 init = coerce OS.init
 
--- | /O(n)/ Extract the 'init' and 'last' of a OsString, returning 'Nothing'
+-- | /O(n)/ Extract the 'init' and 'last' of an `OsString`, returning 'Nothing'
 -- if it is empty.
 unsnoc :: OsString -> Maybe (OsString, OsChar)
 unsnoc = coerce OS.unsnoc
 
--- | /O(1)/ Test whether a 'OsString' is empty.
+-- | /O(1)/ Test whether an `OsString` is empty.
 null :: OsString -> Bool
 null = coerce OS.null
 
--- | /O(1)/ The length of a 'OsString'.
+-- | /O(1)/ The length of an `OsString`.
 --
 -- This returns the number of code units
 -- (@Word8@ on unix and @Word16@ on windows), not
@@ -311,14 +305,14 @@ map = coerce OS.map
 reverse :: OsString -> OsString
 reverse = coerce OS.reverse
 
--- | /O(n)/ The 'intercalate' function takes a 'OsString' and a list of
+-- | /O(n)/ The 'intercalate' function takes an `OsString` and a list of
 -- 'OsString's and concatenates the list after interspersing the first
 -- argument between each element of the list.
 intercalate :: OsString -> [OsString] -> OsString
 intercalate = coerce OS.intercalate
 
 -- | 'foldl', applied to a binary operator, a starting value (typically
--- the left-identity of the operator), and a OsString, reduces the
+-- the left-identity of the operator), and an `OsString`, reduces the
 -- OsString using the binary operator, from left to right.
 foldl :: forall a. (a -> OsChar -> a) -> a -> OsString -> a
 foldl = coerce (OS.foldl @a)
@@ -340,7 +334,7 @@ foldl1' = coerce OS.foldl1'
 
 
 -- | 'foldr', applied to a binary operator, a starting value
--- (typically the right-identity of the operator), and a OsString,
+-- (typically the right-identity of the operator), and an `OsString`,
 -- reduces the OsString using the binary operator, from right to left.
 foldr :: forall a. (OsChar -> a -> a) -> a -> OsString -> a
 foldr = coerce (OS.foldr @a)
@@ -360,12 +354,12 @@ foldr1 = coerce OS.foldr1
 foldr1' :: (OsChar -> OsChar -> OsChar) -> OsString -> OsChar
 foldr1' = coerce OS.foldr1'
 
--- | /O(n)/ Applied to a predicate and a 'OsString', 'all' determines
+-- | /O(n)/ Applied to a predicate and an `OsString`, 'all' determines
 -- if all elements of the 'OsString' satisfy the predicate.
 all :: (OsChar -> Bool) -> OsString -> Bool
 all = coerce OS.all
 
--- | /O(n)/ Applied to a predicate and a 'OsString', 'any' determines if
+-- | /O(n)/ Applied to a predicate and an `OsString`, 'any' determines if
 -- any element of the 'OsString' satisfies the predicate.
 any :: (OsChar -> Bool) -> OsString -> Bool
 any = coerce OS.any
@@ -375,7 +369,7 @@ any = coerce OS.any
 concat :: [OsString] -> OsString
 concat = coerce OS.concat
 
--- | /O(n)/ 'replicate' @n x@ is a OsString of length @n@ with @x@
+-- | /O(n)/ 'replicate' @n x@ is an `OsString` of length @n@ with @x@
 -- the value of every element. The following holds:
 --
 -- > replicate w c = unfoldr w (\u -> Just (u,u)) c
@@ -392,7 +386,7 @@ replicate = coerce OS.replicate
 --
 -- This function is not efficient/safe. It will build a list of @[Word8]@
 -- and run the generator until it returns `Nothing`, otherwise recurse infinitely,
--- then finally create a 'OsString'.
+-- then finally create an `OsString`.
 --
 -- If you know the maximum length, consider using 'unfoldrN'.
 --
@@ -404,7 +398,7 @@ replicate = coerce OS.replicate
 unfoldr :: forall a. (a -> Maybe (OsChar, a)) -> a -> OsString
 unfoldr = coerce (OS.unfoldr @a)
 
--- | /O(n)/ Like 'unfoldr', 'unfoldrN' builds a OsString from a seed
+-- | /O(n)/ Like 'unfoldr', 'unfoldrN' builds an `OsString` from a seed
 -- value.  However, the length of the result is limited by the first
 -- argument to 'unfoldrN'.  This function is more efficient than 'unfoldr'
 -- when the maximum length of the result is known.
@@ -416,10 +410,8 @@ unfoldr = coerce (OS.unfoldr @a)
 unfoldrN :: forall a. Int -> (a -> Maybe (OsChar, a)) -> a -> (OsString, Maybe a)
 unfoldrN = coerce (OS.unfoldrN @a)
 
--- | /O(n)/ 'take' @n@, applied to a OsString @xs@, returns the prefix
+-- | /O(n)/ 'take' @n@, applied to an `OsString` @xs@, returns the prefix
 -- of @xs@ of length @n@, or @xs@ itself if @n > 'length' xs@.
---
--- @since 1.4.200.0
 take :: Int -> OsString -> OsString
 take = coerce OS.take
 
@@ -469,8 +461,6 @@ dropEnd = coerce OS.dropEnd
 -- | Similar to 'Prelude.dropWhile',
 -- drops the longest (possibly empty) prefix of elements
 -- satisfying the predicate and returns the remainder.
---
--- @since 1.4.200.0
 dropWhile :: (OsChar -> Bool) -> OsString -> OsString
 dropWhile = coerce OS.dropWhile
 
@@ -480,7 +470,6 @@ dropWhile = coerce OS.dropWhile
 --
 -- @'dropWhileEnd' p@ is equivalent to @'reverse' . 'dropWhile' p . 'reverse'@.
 --
--- @since 1.4.200.0
 dropWhileEnd :: (OsChar -> Bool) -> OsString -> OsString
 dropWhileEnd = coerce OS.dropWhileEnd
 
@@ -530,7 +519,7 @@ spanEnd = coerce OS.spanEnd
 splitAt :: Int -> OsString -> (OsString, OsString)
 splitAt = coerce OS.splitAt
 
--- | /O(n)/ Break a 'OsString' into pieces separated by the byte
+-- | /O(n)/ Break an `OsString` into pieces separated by the byte
 -- argument, consuming the delimiter. I.e.
 --
 -- > split 10  "a\nb\nd\ne" == ["a","b","d","e"]   -- fromEnum '\n' == 10
@@ -546,7 +535,7 @@ splitAt = coerce OS.splitAt
 split :: OsChar -> OsString -> [OsString]
 split = coerce OS.split
 
--- | /O(n)/ Splits a 'OsString' into components delimited by
+-- | /O(n)/ Splits an `OsString` into components delimited by
 -- separators, where the predicate returns True for a separator element.
 -- The resulting components do not contain the separators.  Two adjacent
 -- separators result in an empty component in the output.  eg.
@@ -618,7 +607,7 @@ breakSubstring = coerce OS.breakSubstring
 elem :: OsChar -> OsString -> Bool
 elem = coerce OS.elem
 
--- | /O(n)/ The 'find' function takes a predicate and a OsString,
+-- | /O(n)/ The 'find' function takes a predicate and an `OsString`,
 -- and returns the first element in matching the predicate, or 'Nothing'
 -- if there is no such element.
 --
@@ -627,13 +616,13 @@ elem = coerce OS.elem
 find :: (OsChar -> Bool) -> OsString -> Maybe OsChar
 find = coerce OS.find
 
--- | /O(n)/ 'filter', applied to a predicate and a OsString,
--- returns a OsString containing those characters that satisfy the
+-- | /O(n)/ 'filter', applied to a predicate and an `OsString`,
+-- returns an `OsString` containing those characters that satisfy the
 -- predicate.
 filter :: (OsChar -> Bool) -> OsString -> OsString
 filter = coerce OS.filter
 
--- | /O(n)/ The 'partition' function takes a predicate a OsString and returns
+-- | /O(n)/ The 'partition' function takes a predicate an `OsString` and returns
 -- the pair of OsStrings with elements which do and do not satisfy the
 -- predicate, respectively; i.e.,
 --
@@ -675,7 +664,7 @@ elemIndices = coerce OS.elemIndices
 count :: OsChar -> OsString -> Int
 count = coerce OS.count
 
--- | /O(n)/ The 'findIndex' function takes a predicate and a 'OsString' and
+-- | /O(n)/ The 'findIndex' function takes a predicate and an `OsString` and
 -- returns the index of the first element in the OsString
 -- satisfying the predicate.
 findIndex :: (OsChar -> Bool) -> OsString -> Maybe Int
@@ -687,3 +676,16 @@ findIndices :: (OsChar -> Bool) -> OsString -> [Int]
 findIndices = coerce OS.findIndices
 
 #endif
+
+#if MIN_VERSION_os_string(2,0,8) && !(MIN_VERSION_filepath(1,5,0))
+
+-- | Constructs an @OsString@ from a ShortByteString.
+--
+-- On windows, this ensures valid UCS-2LE, on unix it is passed unchanged/unchecked.
+--
+-- Throws 'EncodingException' on invalid UCS-2LE on windows (although unlikely).
+fromShortBytes :: forall (m :: Type -> Type). MonadThrow m => ShortByteString -> m OsString
+fromShortBytes sbs = coerce <$> (OS.fromShortBytes @m sbs)
+
+#endif
+

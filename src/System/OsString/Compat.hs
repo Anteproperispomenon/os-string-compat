@@ -1,5 +1,3 @@
-{-# LANGUAGE CPP #-}
-
 {-|
 Module      : System.OsString.Compat
 Copyright   : (c) 2025 David Wilson
@@ -129,7 +127,6 @@ module System.OsString.Compat
 
 import Prelude ()
 
--- If using a newer version of filepath
 import System.OsString.Internal.Compat
 import System.OsString.Internal.Types.Compat
 
