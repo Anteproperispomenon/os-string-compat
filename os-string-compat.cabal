@@ -6,12 +6,14 @@ cabal-version: 2.2
 
 name:           os-string-compat
 version:        0.1.0.0
-description:    Please see the README on GitHub at <https://github.com/githubuser/os-string-compat#readme>
-homepage:       https://github.com/githubuser/os-string-compat#readme
-bug-reports:    https://github.com/githubuser/os-string-compat/issues
-author:         Author name here
+synopsis:       Compatibility layer for os-string
+description:    Please see the README on GitHub at <https://github.com/Anteproperispomenon/os-string-compat#readme>
+category:       System
+homepage:       https://github.com/Anteproperispomenon/os-string-compat#readme
+bug-reports:    https://github.com/Anteproperispomenon/os-string-compat/issues
+author:         David Wilson
 maintainer:     example@example.com
-copyright:      2025 Author name here
+copyright:      2025 Savid Wilson
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
@@ -21,34 +23,35 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/os-string-compat
+  location: https://github.com/Anteproperispomenon/os-string-compat
 
 library
   exposed-modules:
-      Lib
+      System.OsString.Compat
+      System.OsString.Internal.Compat
+      System.OsString.Internal.Types.Compat
   other-modules:
       Paths_os_string_compat
   autogen-modules:
       Paths_os_string_compat
   hs-source-dirs:
       src
+  default-extensions:
+      ImportQualifiedPost
+      LambdaCase
+      MultiWayIf
+      OverloadedStrings
+      PackageImports
+      ScopedTypeVariables
+      TupleSections
+      TypeApplications
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
-      base >=4.7 && <5
-  default-language: Haskell2010
-
-executable os-string-compat-exe
-  main-is: Main.hs
-  other-modules:
-      Paths_os_string_compat
-  autogen-modules:
-      Paths_os_string_compat
-  hs-source-dirs:
-      app
-  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
-  build-depends:
-      base >=4.7 && <5
-    , os-string-compat
+      base >=4.12 && <5
+    , bytestring >=0.11.3.0
+    , exceptions
+    , filepath >=1.4.101.0
+    , os-string >=2.0.1
   default-language: Haskell2010
 
 test-suite os-string-compat-test
@@ -60,8 +63,21 @@ test-suite os-string-compat-test
       Paths_os_string_compat
   hs-source-dirs:
       test
+  default-extensions:
+      ImportQualifiedPost
+      LambdaCase
+      MultiWayIf
+      OverloadedStrings
+      PackageImports
+      ScopedTypeVariables
+      TupleSections
+      TypeApplications
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      base >=4.7 && <5
+      base >=4.12 && <5
+    , bytestring >=0.11.3.0
+    , exceptions
+    , filepath >=1.4.101.0
+    , os-string >=2.0.1
     , os-string-compat
   default-language: Haskell2010

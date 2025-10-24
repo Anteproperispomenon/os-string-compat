@@ -1,26 +1,40 @@
 name:                os-string-compat
 version:             0.1.0.0
-github:              "githubuser/os-string-compat"
+github:              "Anteproperispomenon/os-string-compat"
 license:             BSD-3-Clause
-author:              "Author name here"
+author:              "David Wilson"
 maintainer:          "example@example.com"
-copyright:           "2025 Author name here"
+copyright:           "2025 Savid Wilson"
 
 extra-source-files:
 - README.md
 - CHANGELOG.md
 
 # Metadata used when publishing your package
-# synopsis:            Short description of your package
-# category:            Web
+synopsis:            Compatibility layer for os-string
+category:            System
 
 # To avoid duplicated efforts in documentation and dealing with the
 # complications of embedding Haddock markup inside cabal files, it is
 # common to point users to the README.md file.
-description:         Please see the README on GitHub at <https://github.com/githubuser/os-string-compat#readme>
+description:         Please see the README on GitHub at <https://github.com/Anteproperispomenon/os-string-compat#readme>
+
+default-extensions:
+- ImportQualifiedPost
+- LambdaCase
+- MultiWayIf
+- OverloadedStrings
+- PackageImports
+- ScopedTypeVariables
+- TupleSections
+- TypeApplications
 
 dependencies:
-- base >= 4.7 && < 5
+- base >= 4.12 && < 5
+- os-string >= 2.0.1
+- filepath >= 1.4.101.0
+- bytestring >= 0.11.3.0
+- exceptions
 
 ghc-options:
 - -Wall
@@ -36,16 +50,16 @@ ghc-options:
 library:
   source-dirs: src
 
-executables:
-  os-string-compat-exe:
-    main:                Main.hs
-    source-dirs:         app
-    ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
-    dependencies:
-    - os-string-compat
+# executables:
+#   os-string-compat-exe:
+#     main:                Main.hs
+#     source-dirs:         app
+#     ghc-options:
+#     - -threaded
+#     - -rtsopts
+#     - -with-rtsopts=-N
+#     dependencies:
+#     - os-string-compat
 
 tests:
   os-string-compat-test:
