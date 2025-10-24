@@ -52,24 +52,30 @@ import "os-string" System.OsString.Encoding.Internal
 -- | Synonym of `withWindowsString`
 withFilePathWin :: FilePath -> (Int -> Ptr Word16 -> IO a) -> IO a
 withFilePathWin = withWindowsString
+{-# INLINE withFilePathWin #-}
 
 -- | Synonym of `peekWindowsString`
 peekFilePathWin :: (Ptr Word16, Int) -> IO FilePath
 peekFilePathWin = peekWindowsString
+{-# INLINE peekFilePathWin #-}
 
 -- | Synonym of `withPosixString`
 withFilePathPosix :: FilePath -> (CStringLen -> IO a) -> IO a
 withFilePathPosix = withPosixString
+{-# INLINE withFilePathPosix #-}
 
 -- | Synonym of `withPosixString'`
 withFilePathPosix' :: FilePath -> (CStringLen -> IO a) -> IO a
 withFilePathPosix' = withPosixString'
+{-# INLINE withFilePathPosix' #-}
 
 peekFilePathPosix :: CStringLen -> IO String
 peekFilePathPosix = peekPosixString
+{-# INLINE peekFilePathPosix #-}
 
 peekFilePathPosix' :: CStringLen -> IO String
 peekFilePathPosix' = peekPosixString'
+{-# INLINE peekFilePathPosix' #-}
 
 -- ---------------------------------------------------------------- --
 -- ---------------------------------------------------------------- --

@@ -20,6 +20,7 @@ build-type:     Simple
 extra-source-files:
     README.md
     CHANGELOG.md
+    extra/Common.hs
 
 source-repository head
   type: git
@@ -31,7 +32,10 @@ library
       System.OsString.Encoding.Compat
       System.OsString.Encoding.Internal.Compat
       System.OsString.Internal.Compat
+      System.OsString.Internal.Exception.Compat
       System.OsString.Internal.Types.Compat
+      System.OsString.Posix.Compat
+      System.OsString.Windows.Compat
   other-modules:
       Paths_os_string_compat
   autogen-modules:

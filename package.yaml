@@ -9,6 +9,7 @@ copyright:           "2025 Savid Wilson"
 extra-source-files:
 - README.md
 - CHANGELOG.md
+- extra/Common.hs
 
 # Metadata used when publishing your package
 synopsis:            Compatibility layer for os-string
