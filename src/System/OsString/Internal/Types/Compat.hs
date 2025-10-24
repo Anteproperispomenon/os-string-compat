@@ -18,7 +18,9 @@ module System.OsString.Internal.Types.Compat
   , PlatformChar
   , OsString(..)
   , OsChar(..)
+#if MIN_VERSION_os_string(2,0,2)
   , coercionToPlatformTypes
+#endif
   ) where
 
 #if MIN_VERSION_filepath(1,5,0)

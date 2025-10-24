@@ -28,6 +28,8 @@ source-repository head
 library
   exposed-modules:
       System.OsString.Compat
+      System.OsString.Encoding.Compat
+      System.OsString.Encoding.Internal.Compat
       System.OsString.Internal.Compat
       System.OsString.Internal.Types.Compat
   other-modules:
