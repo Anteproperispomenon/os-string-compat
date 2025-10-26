@@ -4,4 +4,4 @@
 #define PLATFORM_STRING PosixString
 #define PLATFORM_WORD   PosixChar
 #define IS_WINDOWS      False
-#include "../../../extra/Common.hs"
+#include "../../../../src-include/Common.hs"

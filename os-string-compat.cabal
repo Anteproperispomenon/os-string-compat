@@ -12,15 +12,15 @@ category:       System
 homepage:       https://github.com/Anteproperispomenon/os-string-compat#readme
 bug-reports:    https://github.com/Anteproperispomenon/os-string-compat/issues
 author:         David Wilson
-maintainer:     example@example.com
-copyright:      2025 Savid Wilson
+maintainer:     David Wilson
+copyright:      2025 David Wilson
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
     CHANGELOG.md
-    extra/Common.hs
+    src-include/Common.hs
 
 source-repository head
   type: git
