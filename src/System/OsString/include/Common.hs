@@ -1,5 +1,21 @@
 {- HLINT ignore "Unused LANGUAGE pragma" -}
+
 {-# LANGUAGE CPP #-}
+
+-- To allow this file's source code
+-- to be included when using Haddock.
+#ifndef MODULE_NAME
+{-# OPTIONS_HADDOCK hide #-}
+
+#define MODULE_NAME Posix
+#define IS_WINDOWS False
+#define PLATFORM_STRING     PosixString
+#define PLATFORM_STR_PLURAL PosixStrings
+#define PLATFORM_WORD       PosixChar
+#define IS_WINDOWS          False
+#define IN_HADDOCK
+#endif
+
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE RankNTypes #-}
@@ -7,6 +23,9 @@
 -- {-# LANGUAGE TemplateHaskellQuotes #-}
 -- {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wno-unused-imports #-}
+
+
+
 
 -- This is essentially copied from os-string.
 -- It's located in a folder that starts with
@@ -24,7 +43,11 @@
 #define POSIX_DOC
 #endif
 
+#ifdef IN_HADDOCK
+module System.OsString.Common
+#else
 module System.OsString.MODULE_NAME.Compat
+#endif
   (
   -- * Types
 #ifdef WINDOWS
