@@ -45,6 +45,7 @@ module System.OsString.Internal.Compat
   , unsnoc
   , null
   , length
+  , lengthBytes
 
   -- * Transforming OsString
   , map
@@ -158,6 +159,12 @@ import "os-string" System.OsString.Internal qualified as OS
 import "filepath"  System.OsString.Internal qualified as Old
 
 import System.OsString.Internal.Types.Compat
+
+#if defined(mingw32_HOST_OS)
+import System.OsString.Windows.Compat qualified as PF
+#else
+import System.OsString.Posix.Compat qualified as PF
+#endif
 
 import Control.Monad.Catch (MonadThrow)
 
@@ -301,7 +308,14 @@ null = coerce OS.null
 -- (@Word8@ on unix and @Word16@ on windows), not
 -- bytes.
 length :: OsString -> Int
-length = coerce OS.length
+length = coerce PF.length
+
+-- | /O(1)/ The length in bytes of an `OsString`.
+--
+-- This always returns the number of bytes,
+-- regardless of which platform you're on.
+lengthBytes :: OsString -> Int
+lengthBytes = coerce PF.lengthBytes
 
 -- | /O(n)/ 'map' @f xs@ is the OsString obtained by applying @f@ to each
 -- element of @xs@.

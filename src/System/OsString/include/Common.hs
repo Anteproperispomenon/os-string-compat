@@ -114,6 +114,7 @@ module System.OsString.MODULE_NAME.Compat
   , unsnoc
   , null
   , length
+  , lengthBytes
 
   -- * Transforming PLATFORM_STR_PLURAL
   , map
@@ -188,13 +189,63 @@ where
 
 #if MIN_VERSION_filepath(1,5,0)
 
-import Prelude ()
+import Prelude (Int)
 
-import "os-string" System.OsString.MODULE_NAME
+import "os-string" System.OsString.Internal.Types qualified as NewT (PLATFORM_STRING(..), PLATFORM_WORD(..))
+
+import "os-string" System.OsString.MODULE_NAME hiding (length)
+
+import Data.Coerce
+
+#  ifdef WINDOWS
+import "os-string" System.OsString.Data.ByteString.Short.Word16 qualified as B16
+#  else
+import "os-string" System.OsString.Data.ByteString.Short        qualified as B8
+#  endif
+
+-- | /O(1)/ The length of a `PLATFORM_STRING`.
+--
+-- This returns the number of code units
+-- (@Word8@ on unix and @Word16@ on windows), not
+-- bytes.
+--
+-- >>> length "abc"
+-- 3
+--
+-- Note: older versions of os-string return the
+-- length in bytes, rather than the length in
+-- code units. This will return the length in
+-- code units, regardless of the version of 
+-- os-string. For checking the length in Bytes,
+-- use `lengthBytes`.
+length :: PLATFORM_STRING -> Int
+-- length = coerce New.length
+#ifdef WINDOWS
+length = coerce B16.numWord16
+#else
+length = coerce B8.length
+#endif
+
+-- | /O(1)/ The  in bytes of a `PLATFORM_STRING`.
+--
+-- If you want the number of code units, just
+-- use `length` instead.
+lengthBytes :: PLATFORM_STRING -> Int
+#ifdef WINDOWS
+lengthBytes = coerce B16.length
+#else
+lengthBytes = coerce B8.length
+#endif
 
 #else
 
 import "os-string" System.OsString.MODULE_NAME qualified as New
+
+#  ifdef WINDOWS
+import "os-string" System.OsString.Data.ByteString.Short.Word16 qualified as B16
+#  else
+import "os-string" System.OsString.Data.ByteString.Short        qualified as B8
+#  endif
 
 import "filepath" System.OsString.MODULE_NAME (pstr, encodeWith, decodeWith)
 
@@ -691,13 +742,31 @@ null = coerce New.null
 -- >>> length "abc"
 -- 3
 --
+-- Note: older versions of os-string return the
+-- length in bytes, rather than the length in
+-- code units. This will return the length in
+-- code units, regardless of the version of 
+-- os-string. For checking the length in Bytes,
+-- use `lengthBytes`.
 length :: PLATFORM_STRING -> Int
-length = coerce New.length
--- #ifdef WINDOWS
--- length = coerce New.numWord16
--- #else
 -- length = coerce New.length
--- #endif
+#ifdef WINDOWS
+length = coerce B16.numWord16
+#else
+length = coerce B8.length
+#endif
+
+-- | /O(1)/ The length in bytes of a `PLATFORM_STRING`.
+--
+-- If you want the number of code units, just
+-- use `length` instead.
+lengthBytes :: PLATFORM_STRING -> Int
+#ifdef WINDOWS
+lengthBytes = coerce B16.length
+#else
+lengthBytes = coerce B8.length
+#endif
+
 
 -- | /O(n)/ 'map' @f xs@ is the `PLATFORM_STRING` obtained by applying @f@ to each
 -- element of @xs@.

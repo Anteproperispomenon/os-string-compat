@@ -54,6 +54,7 @@ module System.OsString.Compat
   , unsnoc
   , null
   , length
+  , lengthBytes
 
   -- * Transforming OsString
   , map
