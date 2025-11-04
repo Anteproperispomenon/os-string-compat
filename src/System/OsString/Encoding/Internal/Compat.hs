@@ -22,18 +22,28 @@ module System.OsString.Encoding.Internal.Compat
   , peekFilePathWin
   , withPosixString
   , withFilePathPosix
+#if MIN_VERSION_os_string(2,0,5)
   , withPosixString'
   , withFilePathPosix'
+#endif
   , peekPosixString
+#if MIN_VERSION_os_string(2,0,5)
   , peekPosixString'
+#endif
   , peekFilePathPosix
+#if MIN_VERSION_os_string(2,0,5)
   , peekFilePathPosix'
+#endif
   , decodeWithTE
   , encodeWithTE
   , decodeWithBasePosix
+#if MIN_VERSION_os_string(2,0,5)
   , decodeWithBasePosix'
+#endif
   , encodeWithBasePosix
+#if MIN_VERSION_os_string(2,0,5)
   , encodeWithBasePosix'
+#endif
   , decodeWithBaseWindows
   , encodeWithBaseWindows
   , EncodingException(..)
@@ -64,18 +74,20 @@ withFilePathPosix :: FilePath -> (CStringLen -> IO a) -> IO a
 withFilePathPosix = withPosixString
 {-# INLINE withFilePathPosix #-}
 
+#  if MIN_VERSION_os_string(2,0,5)
 -- | Synonym of `withPosixString'`
 withFilePathPosix' :: FilePath -> (CStringLen -> IO a) -> IO a
 withFilePathPosix' = withPosixString'
 {-# INLINE withFilePathPosix' #-}
 
-peekFilePathPosix :: CStringLen -> IO String
-peekFilePathPosix = peekPosixString
-{-# INLINE peekFilePathPosix #-}
-
 peekFilePathPosix' :: CStringLen -> IO String
 peekFilePathPosix' = peekPosixString'
 {-# INLINE peekFilePathPosix' #-}
+#  endif
+
+peekFilePathPosix :: CStringLen -> IO String
+peekFilePathPosix = peekPosixString
+{-# INLINE peekFilePathPosix #-}
 
 -- ---------------------------------------------------------------- --
 -- ---------------------------------------------------------------- --
@@ -107,6 +119,7 @@ withPosixString :: FilePath -> (CStringLen -> IO a) -> IO a
 withPosixString = withFilePathPosix
 {-# INLINE withPosixString #-}
 
+#  if MIN_VERSION_os_string(2,0,5)
 -- | Alternate version of `withPosixString` from
 --   newer versions of 
 withPosixString' :: String -> (CStringLen -> IO a) -> IO a
@@ -116,11 +129,13 @@ withPosixString'= New.withPosixString'
 withFilePathPosix' :: String -> (CStringLen -> IO a) -> IO a
 withFilePathPosix' = withPosixString'
 {-# INLINE withFilePathPosix' #-}
+#  endif
 
 peekPosixString :: CStringLen -> IO String
 peekPosixString = peekFilePathPosix
 {-# INLINE peekPosixString #-}
 
+#  if MIN_VERSION_os_string(2,0,5)
 -- may need to re-write this and other
 -- -' functions to be based on the original
 -- code.
@@ -138,5 +153,6 @@ decodeWithBasePosix' = New.decodeWithBasePosix'
 encodeWithBasePosix' :: String -> IO ShortByteString
 encodeWithBasePosix' = New.encodeWithBasePosix'
 {-# INLINE encodeWithBasePosix' #-}
+#  endif
 
 #endif

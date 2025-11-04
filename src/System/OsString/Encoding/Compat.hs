@@ -1,3 +1,5 @@
+{-# LANGUAGE CPP #-}
+
 module System.OsString.Encoding.Compat
   -- * Types
   ( EncodingException(..)
@@ -22,8 +24,10 @@ module System.OsString.Encoding.Compat
   -- * base encoding
   , encodeWithBasePosix
   , decodeWithBasePosix
+#if MIN_VERSION_os_string(2,0,5)
   , encodeWithBasePosix'
   , decodeWithBasePosix'
+#endif
   , encodeWithBaseWindows
   , decodeWithBaseWindows
   )

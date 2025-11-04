@@ -7,7 +7,9 @@ module System.OsString.Internal.Compat
   , unsafeEncodeUtf
   , encodeWith
   , encodeFS
+#if MIN_VERSION_os_string(2,0,5)
   , encodeLE
+#endif
   , osstr
   , empty
   , singleton
@@ -21,7 +23,9 @@ module System.OsString.Internal.Compat
   , decodeUtf
   , decodeWith
   , decodeFS
+#if MIN_VERSION_os_string(2,0,5)
   , decodeLE
+#endif
   , unpack
 
   -- * Word construction
@@ -182,6 +186,7 @@ unsafeEncodeUtf = coerce OS.unsafeEncodeUtf
 encodeFS :: String -> IO OsString
 encodeFS = coerce OS.encodeFS
 
+#if MIN_VERSION_os_string(2,0,5)
 -- | Like 'encodeUtf', except this mimics the behavior of the base library when doing string
 -- operations, which is:
 --
@@ -194,7 +199,7 @@ encodeFS = coerce OS.encodeFS
 -- to deeply evaluate the result to catch exceptions).
 encodeLE :: String -> IO OsString
 encodeLE = coerce OS.encodeLE
-
+#endif
 
 -- Like 'decodeUtf', except this mimics the behavior of the base library when doing filesystem
 -- operations (usually filepaths), which is:
@@ -213,6 +218,7 @@ encodeLE = coerce OS.encodeLE
 -- decodeFS :: OsString -> IO String
 -- decodeFS = coerce OS.encodeFS
 
+#if MIN_VERSION_os_string(2,0,5)
 -- | Like 'decodeUtf', except this mimics the behavior of the base library when doing string operations,
 -- which is:
 --
@@ -225,6 +231,7 @@ encodeLE = coerce OS.encodeLE
 -- to deeply evaluate the result to catch exceptions).
 decodeLE :: OsString -> IO String
 decodeLE = coerce OS.decodeLE
+#endif
 
 empty :: OsString
 empty = coerce OS.empty

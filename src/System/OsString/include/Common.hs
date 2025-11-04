@@ -40,15 +40,25 @@ module System.OsString.MODULE_NAME.Compat
   , unsafeEncodeUtf
   , encodeWith
   , encodeFS
+#if MIN_VERSION_os_string(2,0,5)
   , encodeLE
+#endif
 #ifdef WINDOWS
+#  if MIN_VERSION_os_string(2,0,6)
   , fromString
+#  endif
 #endif
   , fromBytes
+#if MIN_VERSION_os_string(2,0,8)
   , fromShortBytes
+#endif
 #ifndef WINDOWS
+#  if MIN_VERSION_os_string(2,0,6)
   , fromBytestring
+#  endif
+#  if MIN_VERSION_os_string(2,0,8)
   , fromShortBytestring
+#  endif
 #endif
   , pstr
   , singleton
@@ -59,7 +69,9 @@ module System.OsString.MODULE_NAME.Compat
   , decodeUtf
   , decodeWith
   , decodeFS
+#if MIN_VERSION_os_string(2,0,5)
   , decodeLE
+#endif
   , unpack
 
   -- * Word construction
@@ -166,7 +178,7 @@ import "filepath" System.OsString.MODULE_NAME (pstr, encodeWith, decodeWith)
 import "os-string" System.OsString.Internal.Types qualified as NewT (PLATFORM_STRING(..), PLATFORM_WORD(..))
 import System.OsString.Internal.Types.Compat (PLATFORM_STRING(..), PLATFORM_WORD(..))
 
-import System.OsString.Internal.Exception
+import System.OsString.Internal.Exception.Compat
 import System.OsString.Internal.Types.Compat (
 #ifdef WINDOWS
   WindowsString(..), WindowsChar(..)
@@ -297,29 +309,32 @@ encodeFS = coerce New.encodeFS
 encodeFS = coerce New.encodeFS
 #endif
 
-#ifdef WINDOWS_DOC
+#if MIN_VERSION_os_string(2,0,5)
+#  ifdef WINDOWS_DOC
 -- | This mimics the behavior of the base library when doing string
 -- operations, which does permissive UTF-16 encoding, where coding errors generate
 -- Chars in the surrogate range.
 --
 -- The reason this is in IO is because it unifies with the Posix counterpart,
 -- which does require IO. This is safe to 'unsafePerformIO'/'unsafeDupablePerformIO'.
-#else
+#  else
 -- | This mimics the behavior of the base library when doing string
 -- operations, which uses 'getLocaleEncoding'.
 --
 -- Looking up the locale requires IO. If you're not worried about calls
 -- to 'setFileSystemEncoding', then 'unsafePerformIO' may be feasible (make sure
 -- to deeply evaluate the result to catch exceptions).
-#endif
+#  endif
 encodeLE :: String -> IO PLATFORM_STRING
-#ifdef WINDOWS
+#  ifdef WINDOWS
 encodeLE = coerce New.encodeLE
-#else
+#  else
 encodeLE = coerce New.encodeLE
+#  endif
 #endif
 
 #ifdef WINDOWS
+#  if MIN_VERSION_os_string(2,0,6)
 -- | Like 'encodeLE but not in IO.
 --
 -- 'encodeLE' was designed to have a symmetric type signature
@@ -333,6 +348,7 @@ encodeLE = coerce New.encodeLE
 -- @since 2.0.6
 fromString :: String -> WindowsString
 fromString = coerce New.fromString
+#  endif
 #endif
 
 #ifdef WINDOWS_DOC
@@ -382,6 +398,7 @@ decodeWith = coerce New.decodeWith
 #endif
 -}
 
+#if MIN_VERSION_os_string(2,0,5)
 #ifdef WINDOWS_DOC
 -- | Like 'decodeUtf', except this mimics the behavior of the base library when doing filesystem
 -- operations, which does permissive UTF-16 encoding, where coding errors generate
@@ -399,6 +416,7 @@ decodeWith = coerce New.decodeWith
 #endif
 decodeLE :: PLATFORM_STRING -> IO String
 decodeLE = coerce New.decodeLE
+#endif
 
 #ifdef WINDOWS_DOC
 -- | Like 'decodeUtf', except this mimics the behavior of the base library when doing filesystem
@@ -446,6 +464,7 @@ fromBytes :: MonadThrow m
 fromBytes bs = coerce <$> New.fromBytes bs
 -- fromBytes = fromShortBytes . BS16.toShort
 
+#if MIN_VERSION_os_string(2,0,8)
 #ifdef WINDOWS_DOC
 -- | Constructs a platform string from a ShortByteString.
 --
@@ -466,6 +485,7 @@ fromShortBytes :: MonadThrow m
                => ShortByteString
                -> m PLATFORM_STRING
 fromShortBytes sbs = coerce <$> New.fromShortBytes sbs
+#endif
 
 -- #ifdef WINDOWS
 -- fromShortBytes bs =
@@ -476,6 +496,7 @@ fromShortBytes sbs = coerce <$> New.fromShortBytes sbs
 -- #endif
 
 #ifndef WINDOWS
+#  if MIN_VERSION_os_string(2,0,6)
 -- | Like 'fromBytes', but not in IO.
 --
 -- 'fromBytes' was designed to have a symmetric type signature
@@ -488,13 +509,16 @@ fromShortBytes sbs = coerce <$> New.fromShortBytes sbs
 fromBytestring :: ByteString -> PosixString
 fromBytestring = coerce New.fromBytestring
 -- fromBytestring = PosixString . BSP.toShort
+#  endif
 
+#  if MIN_VERSION_os_string(2,0,8)
 -- | Like 'fromShortBytes', but not in IO, similarly to 'fromBytestring'
 --
 -- @since 2.0.8
 fromShortBytestring :: ShortByteString -> PosixString
 fromShortBytestring = coerce New.fromShortBytestring
 -- fromShortBytestring = PosixString
+#  endif
 #endif
 
 
