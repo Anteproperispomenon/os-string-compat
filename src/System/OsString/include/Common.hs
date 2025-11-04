@@ -9,9 +9,10 @@
 {-# OPTIONS_GHC -Wno-unused-imports #-}
 
 -- This is essentially copied from os-string.
--- It's not in src since then stack will try
--- to compile it as-is. Instead, it should just
--- be imported.
+-- It's located in a folder that starts with
+-- a lower-case character so that it doesn't
+-- get compiled by default. Instead, it is
+-- just to be CPP-included by other modules.
 
 -- This template expects CPP definitions for:
 --     MODULE_NAME = Posix | Windows
@@ -79,12 +80,12 @@ module System.OsString.MODULE_NAME.Compat
   , null
   , length
 
-  -- * Transforming OsString
+  -- * Transforming PLATFORM_STR_PLURAL
   , map
   , reverse
   , intercalate
 
-  -- * Reducing OsStrings (folds)
+  -- * Reducing PLATFORM_STR_PLURAL (folds)
   , foldl
   , foldl'
   , foldl1
@@ -99,7 +100,7 @@ module System.OsString.MODULE_NAME.Compat
   , any
   , concat
 
-  -- ** Generating and unfolding OsStrings
+  -- ** Generating and unfolding PLATFORM_STR_PLURAL
   , replicate
   , unfoldr
   , unfoldrN
@@ -131,14 +132,14 @@ module System.OsString.MODULE_NAME.Compat
   -- ** Search for arbitrary susbstrings
   , breakSubstring
 
-  -- * Searching OsStrings
+  -- * Searching PLATFORM_STR_PLURAL
   -- ** Searching by equality
   , elem
   , find
   , filter
   , partition
 
-  -- * Indexing OsStrings
+  -- * Indexing PLATFORM_STR_PLURAL
   , index
   , indexMaybe
   , (!?)
@@ -574,7 +575,7 @@ toChar = coerce New.toChar
 toChar = coerce New.toChar
 #endif
 
--- | /O(n)/ Append a byte to the end of a 'OsString'
+-- | /O(n)/ Append a byte to the end of a `PLATFORM_STRING`
 --
 snoc :: PLATFORM_STRING -> PLATFORM_WORD -> PLATFORM_STRING
 snoc = coerce New.snoc
@@ -585,56 +586,56 @@ cons :: PLATFORM_WORD -> PLATFORM_STRING -> PLATFORM_STRING
 cons = coerce New.cons
 
 
--- | /O(1)/ Extract the last element of a OsString, which must be finite and non-empty.
--- An exception will be thrown in the case of an empty OsString.
+-- | /O(1)/ Extract the last element of a `PLATFORM_STRING`, which must be finite and non-empty.
+-- An exception will be thrown in the case of an empty `PLATFORM_STRING`.
 --
 -- This is a partial function, consider using 'unsnoc' instead.
 --
 last :: HasCallStack => PLATFORM_STRING -> PLATFORM_WORD
 last = coerce New.last
 
--- | /O(n)/ Extract the elements after the head of a OsString, which must be non-empty.
--- An exception will be thrown in the case of an empty OsString.
+-- | /O(n)/ Extract the elements after the head of a `PLATFORM_STRING`, which must be non-empty.
+-- An exception will be thrown in the case of an empty `PLATFORM_STRING`.
 --
 -- This is a partial function, consider using 'uncons' instead.
 --
 tail :: HasCallStack => PLATFORM_STRING -> PLATFORM_STRING
 tail = coerce New.tail
 
--- | /O(n)/ Extract the 'head' and 'tail' of a OsString, returning 'Nothing'
+-- | /O(n)/ Extract the 'head' and 'tail' of a `PLATFORM_STRING`, returning 'Nothing'
 -- if it is empty.
 --
 uncons :: PLATFORM_STRING -> Maybe (PLATFORM_WORD, PLATFORM_STRING)
 uncons = coerce New.uncons
 
--- | /O(1)/ Extract the first element of a OsString, which must be non-empty.
--- An exception will be thrown in the case of an empty OsString.
+-- | /O(1)/ Extract the first element of a `PLATFORM_STRING`, which must be non-empty.
+-- An exception will be thrown in the case of an empty `PLATFORM_STRING`.
 --
 -- This is a partial function, consider using 'uncons' instead.
 --
 head :: HasCallStack => PLATFORM_STRING -> PLATFORM_WORD
 head = coerce New.head
 
--- | /O(n)/ Return all the elements of a 'OsString' except the last one.
--- An exception will be thrown in the case of an empty OsString.
+-- | /O(n)/ Return all the elements of a `PLATFORM_STRING` except the last one.
+-- An exception will be thrown in the case of an empty `PLATFORM_STRING`.
 --
 -- This is a partial function, consider using 'unsnoc' instead.
 --
 init :: HasCallStack => PLATFORM_STRING -> PLATFORM_STRING
 init = coerce New.init
 
--- | /O(n)/ Extract the 'init' and 'last' of a OsString, returning 'Nothing'
+-- | /O(n)/ Extract the 'init' and 'last' of a `PLATFORM_STRING`, returning 'Nothing'
 -- if it is empty.
 --
 unsnoc :: PLATFORM_STRING -> Maybe (PLATFORM_STRING, PLATFORM_WORD)
 unsnoc = coerce New.unsnoc
 
--- | /O(1)/. The empty 'OsString'.
+-- | /O(1)/. The empty `PLATFORM_STRING`.
 --
 null :: PLATFORM_STRING -> Bool
 null = coerce New.null
 
--- | /O(1)/ The length of a 'OsString'.
+-- | /O(1)/ The length of a `PLATFORM_STRING`.
 --
 -- This returns the number of code units
 -- (@Word8@ on unix and @Word16@ on windows), not
@@ -651,7 +652,7 @@ length = coerce New.length
 -- length = coerce New.length
 -- #endif
 
--- | /O(n)/ 'map' @f xs@ is the OsString obtained by applying @f@ to each
+-- | /O(n)/ 'map' @f xs@ is the `PLATFORM_STRING` obtained by applying @f@ to each
 -- element of @xs@.
 --
 map :: (PLATFORM_WORD -> PLATFORM_WORD) -> PLATFORM_STRING -> PLATFORM_STRING
@@ -662,16 +663,16 @@ map = coerce New.map
 reverse :: PLATFORM_STRING -> PLATFORM_STRING
 reverse = coerce New.reverse
 
--- | /O(n)/ The 'intercalate' function takes a 'OsString' and a list of
--- 'OsString's and concatenates the list after interspersing the first
+-- | /O(n)/ The 'intercalate' function takes a `PLATFORM_STRING` and a list of
+-- `PLATFORM_STRING`s and concatenates the list after interspersing the first
 -- argument between each element of the list.
 --
 intercalate :: PLATFORM_STRING -> [PLATFORM_STRING] -> PLATFORM_STRING
 intercalate = coerce New.intercalate
 
 -- | 'foldl', applied to a binary operator, a starting value (typically
--- the left-identity of the operator), and a OsString, reduces the
--- OsString using the binary operator, from left to right.
+-- the left-identity of the operator), and a `PLATFORM_STRING`, reduces the
+-- `PLATFORM_STRING` using the binary operator, from left to right.
 --
 foldl :: forall a. (a -> PLATFORM_WORD -> a) -> a -> PLATFORM_STRING -> a
 foldl = coerce (New.foldl @a)
@@ -683,22 +684,22 @@ foldl'
 foldl' = coerce (New.foldl' @a)
 
 -- | 'foldl1' is a variant of 'foldl' that has no starting value
--- argument, and thus must be applied to non-empty 'OsString's.
--- An exception will be thrown in the case of an empty OsString.
+-- argument, and thus must be applied to non-empty `PLATFORM_STRING`s.
+-- An exception will be thrown in the case of an empty `PLATFORM_STRING`.
 --
 foldl1 :: (PLATFORM_WORD -> PLATFORM_WORD -> PLATFORM_WORD) -> PLATFORM_STRING -> PLATFORM_WORD
 foldl1 = coerce New.foldl1
 
 -- | 'foldl1'' is like 'foldl1', but strict in the accumulator.
--- An exception will be thrown in the case of an empty OsString.
+-- An exception will be thrown in the case of an empty `PLATFORM_STRING`.
 --
 foldl1'
   :: (PLATFORM_WORD -> PLATFORM_WORD -> PLATFORM_WORD) -> PLATFORM_STRING -> PLATFORM_WORD
 foldl1' = coerce New.foldl1'
 
 -- | 'foldr', applied to a binary operator, a starting value
--- (typically the right-identity of the operator), and a OsString,
--- reduces the OsString using the binary operator, from right to left.
+-- (typically the right-identity of the operator), and a `PLATFORM_STRING`,
+-- reduces the `PLATFORM_STRING` using the binary operator, from right to left.
 --
 foldr :: forall a. (PLATFORM_WORD -> a -> a) -> a -> PLATFORM_STRING -> a
 foldr = coerce (New.foldr @a)
@@ -710,8 +711,8 @@ foldr'
 foldr' = coerce (New.foldr' @a)
 
 -- | 'foldr1' is a variant of 'foldr' that has no starting value argument,
--- and thus must be applied to non-empty 'OsString's
--- An exception will be thrown in the case of an empty OsString.
+-- and thus must be applied to non-empty `PLATFORM_STRING`s
+-- An exception will be thrown in the case of an empty `PLATFORM_STRING`.
 --
 foldr1 :: (PLATFORM_WORD -> PLATFORM_WORD -> PLATFORM_WORD) -> PLATFORM_STRING -> PLATFORM_WORD
 foldr1 = coerce New.foldr1
@@ -723,14 +724,14 @@ foldr1'
   :: (PLATFORM_WORD -> PLATFORM_WORD -> PLATFORM_WORD) -> PLATFORM_STRING -> PLATFORM_WORD
 foldr1' = coerce New.foldr1'
 
--- | /O(n)/ Applied to a predicate and a 'OsString', 'all' determines
--- if all elements of the 'OsString' satisfy the predicate.
+-- | /O(n)/ Applied to a predicate and a 'PLATFString', 'all' determines
+-- if all elements of the `PLATFORM_STRING` satisfy the predicate.
 --
 all :: (PLATFORM_WORD -> Bool) -> PLATFORM_STRING -> Bool
 all = coerce New.all
 
--- | /O(n)/ Applied to a predicate and a 'OsString', 'any' determines if
--- any element of the 'OsString' satisfies the predicate.
+-- | /O(n)/ Applied to a predicate and a `PLATFORM_STRING`, 'any' determines if
+-- any element of the `PLATFORM_STRING` satisfies the predicate.
 --
 any :: (PLATFORM_WORD -> Bool) -> PLATFORM_STRING -> Bool
 any = coerce New.any
@@ -740,7 +741,7 @@ any = coerce New.any
 concat :: [PLATFORM_STRING] -> PLATFORM_STRING
 concat = mconcat
 
--- | /O(n)/ 'replicate' @n x@ is a OsString of length @n@ with @x@
+-- | /O(n)/ 'replicate' @n x@ is a `PLATFORM_STRING` of length @n@ with @x@
 -- the value of every element. The following holds:
 --
 -- > replicate w c = unfoldr w (\u -> Just (u,u)) c
@@ -750,14 +751,14 @@ replicate = coerce New.replicate
 
 -- | /O(n)/, where /n/ is the length of the result.  The 'unfoldr'
 -- function is analogous to the List \'unfoldr\'.  'unfoldr' builds a
--- OsString from a seed value.  The function takes the element and
--- returns 'Nothing' if it is done producing the OsString or returns
+-- `PLATFORM_STRING` from a seed value.  The function takes the element and
+-- returns 'Nothing' if it is done producing the `PLATFORM_STRING` or returns
 -- 'Just' @(a,b)@, in which case, @a@ is the next byte in the string,
 -- and @b@ is the seed value for further production.
 --
 -- This function is not efficient/safe. It will build a list of @[Word8]@
 -- and run the generator until it returns `Nothing`, otherwise recurse infinitely,
--- then finally create a 'OsString'.
+-- then finally create a `PLATFORM_STRING`.
 --
 -- If you know the maximum length, consider using 'unfoldrN'.
 --
@@ -769,7 +770,7 @@ replicate = coerce New.replicate
 unfoldr :: forall a. (a -> Maybe (PLATFORM_WORD, a)) -> a -> PLATFORM_STRING
 unfoldr = coerce (New.unfoldr @a)
 
--- | /O(n)/ Like 'unfoldr', 'unfoldrN' builds a OsString from a seed
+-- | /O(n)/ Like 'unfoldr', 'unfoldrN' builds a `PLATFORM_STRING` from a seed
 -- value.  However, the length of the result is limited by the first
 -- argument to 'unfoldrN'.  This function is more efficient than 'unfoldr'
 -- when the maximum length of the result is known.
@@ -781,7 +782,7 @@ unfoldr = coerce (New.unfoldr @a)
 unfoldrN :: forall a. Int -> (a -> Maybe (PLATFORM_WORD, a)) -> a -> (PLATFORM_STRING, Maybe a)
 unfoldrN = coerce (New.unfoldrN @a)
 
--- | /O(n)/ 'take' @n@, applied to a OsString @xs@, returns the prefix
+-- | /O(n)/ 'take' @n@, applied to a `PLATFORM_STRING` @xs@, returns the prefix
 -- of @xs@ of length @n@, or @xs@ itself if @n > 'length' xs@.
 --
 take :: Int -> PLATFORM_STRING -> PLATFORM_STRING
@@ -891,7 +892,7 @@ spanEnd = coerce New.spanEnd
 splitAt :: Int -> PLATFORM_STRING -> (PLATFORM_STRING, PLATFORM_STRING)
 splitAt = coerce New.splitAt
 
--- | /O(n)/ Break a 'OsString' into pieces separated by the byte
+-- | /O(n)/ Break a `PLATFORM_STRING` into pieces separated by the byte
 -- argument, consuming the delimiter. I.e.
 --
 -- > split 10  "a\nb\nd\ne" == ["a","b","d","e"]   -- fromEnum '\n' == 10
@@ -907,7 +908,7 @@ splitAt = coerce New.splitAt
 split :: PLATFORM_WORD -> PLATFORM_STRING -> [PLATFORM_STRING]
 split = coerce New.split
 
--- | /O(n)/ Splits a 'OsString' into components delimited by
+-- | /O(n)/ Splits a `PLATFORM_STRING` into components delimited by
 -- separators, where the predicate returns True for a separator element.
 -- The resulting components do not contain the separators.  Two adjacent
 -- separators result in an empty component in the output.  eg.
@@ -976,11 +977,11 @@ isSuffixOf = coerce New.isSuffixOf
 breakSubstring :: PLATFORM_STRING -> PLATFORM_STRING -> (PLATFORM_STRING, PLATFORM_STRING)
 breakSubstring = coerce New.breakSubstring
 
--- | /O(n)/ 'elem' is the 'OsString' membership predicate.
+-- | /O(n)/ 'elem' is the `PLATFORM_STRING` membership predicate.
 elem :: PLATFORM_WORD -> PLATFORM_STRING -> Bool
 elem = coerce New.elem
 
--- | /O(n)/ The 'find' function takes a predicate and a OsString,
+-- | /O(n)/ The 'find' function takes a predicate and a `PLATFORM_STRING`,
 -- and returns the first element in matching the predicate, or 'Nothing'
 -- if there is no such element.
 --
@@ -989,13 +990,13 @@ elem = coerce New.elem
 find :: (PLATFORM_WORD -> Bool) -> PLATFORM_STRING -> Maybe PLATFORM_WORD
 find = coerce New.find
 
--- | /O(n)/ 'filter', applied to a predicate and a OsString,
--- returns a OsString containing those characters that satisfy the
+-- | /O(n)/ 'filter', applied to a predicate and a `PLATFORM_STRING`,
+-- returns a `PLATFORM_STRING` containing those characters that satisfy the
 -- predicate.
 filter :: (PLATFORM_WORD -> Bool) -> PLATFORM_STRING -> PLATFORM_STRING
 filter = coerce New.filter
 
--- | /O(n)/ The 'partition' function takes a predicate a OsString and returns
+-- | /O(n)/ The 'partition' function takes a predicate a `PLATFORM_STRING` and returns
 -- the pair of OsStrings with elements which do and do not satisfy the
 -- predicate, respectively; i.e.,
 --
@@ -1004,18 +1005,18 @@ filter = coerce New.filter
 partition :: (PLATFORM_WORD -> Bool) -> PLATFORM_STRING -> (PLATFORM_STRING, PLATFORM_STRING)
 partition = coerce New.partition
 
--- | /O(1)/ 'OsString' index (subscript) operator, starting from 0.
+-- | /O(1)/ `PLATFORM_STRING` index (subscript) operator, starting from 0.
 index :: HasCallStack => PLATFORM_STRING -> Int -> PLATFORM_WORD
 index = coerce New.index
 
--- | /O(1)/ 'OsString' index, starting from 0, that returns 'Just' if:
+-- | /O(1)/ `PLATFORM_STRING` index, starting from 0, that returns 'Just' if:
 --
 -- > 0 <= n < length bs
 --
 indexMaybe :: PLATFORM_STRING -> Int -> Maybe PLATFORM_WORD
 indexMaybe = coerce New.indexMaybe
 
--- | /O(1)/ 'OsString' index, starting from 0, that returns 'Just' if:
+-- | /O(1)/ `PLATFORM_STRING` index, starting from 0, that returns 'Just' if:
 --
 -- > 0 <= n < length bs
 --
@@ -1023,7 +1024,7 @@ indexMaybe = coerce New.indexMaybe
 (!?) = indexMaybe
 
 -- | /O(n)/ The 'elemIndex' function returns the index of the first
--- element in the given 'OsString' which is equal to the query
+-- element in the given `PLATFORM_STRING` which is equal to the query
 -- element, or 'Nothing' if there is no such element.
 elemIndex :: PLATFORM_WORD -> PLATFORM_STRING -> Maybe Int
 elemIndex = coerce New.elemIndex
@@ -1033,12 +1034,12 @@ elemIndex = coerce New.elemIndex
 elemIndices :: PLATFORM_WORD -> PLATFORM_STRING -> [Int]
 elemIndices = coerce New.elemIndices
 
--- | count returns the number of times its argument appears in the OsString
+-- | count returns the number of times its argument appears in the `PLATFORM_STRING`
 count :: PLATFORM_WORD -> PLATFORM_STRING -> Int
 count = coerce New.count
 
--- | /O(n)/ The 'findIndex' function takes a predicate and a 'OsString' and
--- returns the index of the first element in the OsString
+-- | /O(n)/ The 'findIndex' function takes a predicate and a `PLATFORM_STRING` and
+-- returns the index of the first element in the `PLATFORM_STRING`
 -- satisfying the predicate.
 findIndex :: (PLATFORM_WORD -> Bool) -> PLATFORM_STRING -> Maybe Int
 findIndex = coerce New.findIndex

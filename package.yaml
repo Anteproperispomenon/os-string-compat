@@ -9,7 +9,7 @@ copyright:           "2025 David Wilson"
 extra-source-files:
 - README.md
 - CHANGELOG.md
-- src-include/Common.hs
+- src/System/OsString/include/Common.hs
 
 # Metadata used when publishing your package
 synopsis:            Compatibility layer for os-string
