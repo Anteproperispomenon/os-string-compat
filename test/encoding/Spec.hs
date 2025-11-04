@@ -1,2 +1,9 @@
+-- {-# LANGUAGE TypeApplications #-}
+
+module Main (main) where
+
+import qualified EncodingSpec as Spec
+import TestUtil
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = runTests (Spec.tests)

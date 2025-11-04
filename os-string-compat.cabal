@@ -104,6 +104,7 @@ test-suite encoding-tests
   other-modules:
       Arbitrary
       TestUtil
+      EncodingSpec
       Paths_os_string_compat
   autogen-modules:
       Paths_os_string_compat
