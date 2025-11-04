@@ -123,6 +123,9 @@ module System.OsString.Compat
   , count
   , findIndex
   , findIndices
+
+  -- * Coercions
+  , coercionToPlatformTypes
   ) where
 
 import Prelude ()
