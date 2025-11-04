@@ -20,7 +20,7 @@ build-type:     Simple
 extra-source-files:
     README.md
     CHANGELOG.md
-    src-include/Common.hs
+    src/System/OsString/include/Common.hs
 
 source-repository head
   type: git
