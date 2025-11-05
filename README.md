@@ -37,7 +37,7 @@ e.g.
 ```yaml
 extra-deps:
 - git: https://github.com/Anteproperispomenon/os-string-compat
-  commit: 9026e013c0403925a4ce06dd94d98d2ede8a636b # keep this up-to-date
+  commit: 7c469fedffdd598cbe6f7eee6a6b08d6ae831e7c # keep this up-to-date
 ```
 
 After that, instead of importing `System.OsString` etc, you import `System.OsString.Compat`
