@@ -21,7 +21,11 @@ jobs:
         stack: ['2.9.3', 'latest']
         os: [ubuntu-latest, macOS-latest, windows-latest]
 
-    name: Haskell GHC ${{ matrix.ghc }} sample
+      #deps:
+      #  filepath: ["filepath-1.5.4.0", "filepath-1.4.101.0", "filepath-1.4.301.0"]
+      #  osstring: ["os-string-2.0.1", "os-string-2.0.4", "os-string-2.0.6", "os-string-2.0.8"]
+
+    name: Haskell GHC ${{ matrix.ghc }} ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Haskell
@@ -31,7 +35,12 @@ jobs:
           cabal-version: ${{ matrix.cabal }}
           stack-version: ${{ matrix.stack }}
           enable-stack: true
-      - run: stack test
+      - name: Build dependencies
+        run: stack test --only-dependencies
+      - name: Build code
+        run: stack build --ghc-options "-Wno-unused-imports -Wno-identities -Wno-deprecations"
+      - name: Run Tests
+        run: stack test --ghc-options "-Wno-unused-imports -Wno-identities -Wno-deprecations"
 
 #    steps:
 #    - uses: actions/checkout@v4
