@@ -126,8 +126,30 @@ import Prelude ()
 -- These should have the same types as in
 -- System.OsString.Internal.Types.Compat, so
 -- it shouldn't be a problem to use this directly.
-import "os-string" System.OsString.Internal
+import "os-string" System.OsString.Internal hiding (length)
 
+#if defined(mingw32_HOST_OS)
+import System.OsString.Windows.Compat qualified as PF
+#else
+import System.OsString.Posix.Compat qualified as PF
+#endif
+
+-- | /O(1)/ The length of an `OsString`.
+--
+-- This returns the number of code units
+-- (@Word8@ on unix and @Word16@ on windows), not
+-- bytes.
+length :: OsString -> Int
+length = coerce PF.length
+
+-- | /O(1)/ The length in bytes of an `OsString`.
+--
+-- This always returns the number of bytes,
+-- regardless of which platform you're on.
+lengthBytes :: OsString -> Int
+lengthBytes = coerce PF.lengthBytes
+
+-- End of filepath >= 1.5.0 section
 #else
 
 import Data.Kind (Type)
