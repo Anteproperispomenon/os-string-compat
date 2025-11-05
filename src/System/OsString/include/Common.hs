@@ -1,5 +1,21 @@
 {- HLINT ignore "Unused LANGUAGE pragma" -}
+
 {-# LANGUAGE CPP #-}
+
+-- To allow this file's source code
+-- to be included when using Haddock.
+#ifndef MODULE_NAME
+{-# OPTIONS_HADDOCK hide #-}
+
+#define MODULE_NAME Posix
+#define IS_WINDOWS False
+#define PLATFORM_STRING     PosixString
+#define PLATFORM_STR_PLURAL PosixStrings
+#define PLATFORM_WORD       PosixChar
+#define IS_WINDOWS          False
+#define IN_HADDOCK
+#endif
+
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE PatternSynonyms #-}
 {-# LANGUAGE RankNTypes #-}
@@ -7,6 +23,9 @@
 -- {-# LANGUAGE TemplateHaskellQuotes #-}
 -- {-# LANGUAGE ViewPatterns #-}
 {-# OPTIONS_GHC -Wno-unused-imports #-}
+
+
+
 
 -- This is essentially copied from os-string.
 -- It's located in a folder that starts with
@@ -24,7 +43,11 @@
 #define POSIX_DOC
 #endif
 
+#ifdef IN_HADDOCK
+module System.OsString.Common
+#else
 module System.OsString.MODULE_NAME.Compat
+#endif
   (
   -- * Types
 #ifdef WINDOWS
@@ -40,15 +63,25 @@ module System.OsString.MODULE_NAME.Compat
   , unsafeEncodeUtf
   , encodeWith
   , encodeFS
+#if MIN_VERSION_os_string(2,0,5)
   , encodeLE
+#endif
 #ifdef WINDOWS
+#  if MIN_VERSION_os_string(2,0,6)
   , fromString
+#  endif
 #endif
   , fromBytes
+#if MIN_VERSION_os_string(2,0,8)
   , fromShortBytes
+#endif
 #ifndef WINDOWS
+#  if MIN_VERSION_os_string(2,0,6)
   , fromBytestring
+#  endif
+#  if MIN_VERSION_os_string(2,0,8)
   , fromShortBytestring
+#  endif
 #endif
   , pstr
   , singleton
@@ -59,7 +92,9 @@ module System.OsString.MODULE_NAME.Compat
   , decodeUtf
   , decodeWith
   , decodeFS
+#if MIN_VERSION_os_string(2,0,5)
   , decodeLE
+#endif
   , unpack
 
   -- * Word construction
@@ -79,6 +114,7 @@ module System.OsString.MODULE_NAME.Compat
   , unsnoc
   , null
   , length
+  , lengthBytes
 
   -- * Transforming PLATFORM_STR_PLURAL
   , map
@@ -153,20 +189,72 @@ where
 
 #if MIN_VERSION_filepath(1,5,0)
 
-import Prelude ()
+import Prelude (Int)
 
-import "os-string" System.OsString.MODULE_NAME
+import "os-string" System.OsString.Internal.Types qualified as NewT (PLATFORM_STRING(..), PLATFORM_WORD(..))
+import System.OsString.Internal.Types.Compat (PLATFORM_STRING(..), PLATFORM_WORD(..))
 
+import "os-string" System.OsString.MODULE_NAME hiding (length)
+
+import Data.Coerce
+
+#  ifdef WINDOWS
+import "os-string" System.OsString.Data.ByteString.Short.Word16 qualified as B16
+#  else
+import "os-string" System.OsString.Data.ByteString.Short        qualified as B8
+#  endif
+
+-- | /O(1)/ The length of a `PLATFORM_STRING`.
+--
+-- This returns the number of code units
+-- (@Word8@ on unix and @Word16@ on windows), not
+-- bytes.
+--
+-- >>> length "abc"
+-- 3
+--
+-- Note: older versions of os-string return the
+-- length in bytes, rather than the length in
+-- code units. This will return the length in
+-- code units, regardless of the version of 
+-- os-string. For checking the length in Bytes,
+-- use `lengthBytes`.
+length :: PLATFORM_STRING -> Int
+-- length = coerce New.length
+#ifdef WINDOWS
+length = coerce B16.numWord16
+#else
+length = coerce B8.length
+#endif
+
+-- | /O(1)/ The length in bytes of a `PLATFORM_STRING`.
+--
+-- If you want the number of code units, just
+-- use `length` instead.
+lengthBytes :: PLATFORM_STRING -> Int
+#ifdef WINDOWS
+lengthBytes = coerce B16.length
+#else
+lengthBytes = coerce B8.length
+#endif
+
+-- End of (filepath >= 1.5.0) section
 #else
 
 import "os-string" System.OsString.MODULE_NAME qualified as New
+
+#  ifdef WINDOWS
+import "os-string" System.OsString.Data.ByteString.Short.Word16 qualified as B16
+#  else
+import "os-string" System.OsString.Data.ByteString.Short        qualified as B8
+#  endif
 
 import "filepath" System.OsString.MODULE_NAME (pstr, encodeWith, decodeWith)
 
 import "os-string" System.OsString.Internal.Types qualified as NewT (PLATFORM_STRING(..), PLATFORM_WORD(..))
 import System.OsString.Internal.Types.Compat (PLATFORM_STRING(..), PLATFORM_WORD(..))
 
-import System.OsString.Internal.Exception
+import System.OsString.Internal.Exception.Compat
 import System.OsString.Internal.Types.Compat (
 #ifdef WINDOWS
   WindowsString(..), WindowsChar(..)
@@ -297,29 +385,32 @@ encodeFS = coerce New.encodeFS
 encodeFS = coerce New.encodeFS
 #endif
 
-#ifdef WINDOWS_DOC
+#if MIN_VERSION_os_string(2,0,5)
+#  ifdef WINDOWS_DOC
 -- | This mimics the behavior of the base library when doing string
 -- operations, which does permissive UTF-16 encoding, where coding errors generate
 -- Chars in the surrogate range.
 --
 -- The reason this is in IO is because it unifies with the Posix counterpart,
 -- which does require IO. This is safe to 'unsafePerformIO'/'unsafeDupablePerformIO'.
-#else
+#  else
 -- | This mimics the behavior of the base library when doing string
 -- operations, which uses 'getLocaleEncoding'.
 --
 -- Looking up the locale requires IO. If you're not worried about calls
 -- to 'setFileSystemEncoding', then 'unsafePerformIO' may be feasible (make sure
 -- to deeply evaluate the result to catch exceptions).
-#endif
+#  endif
 encodeLE :: String -> IO PLATFORM_STRING
-#ifdef WINDOWS
+#  ifdef WINDOWS
 encodeLE = coerce New.encodeLE
-#else
+#  else
 encodeLE = coerce New.encodeLE
+#  endif
 #endif
 
 #ifdef WINDOWS
+#  if MIN_VERSION_os_string(2,0,6)
 -- | Like 'encodeLE but not in IO.
 --
 -- 'encodeLE' was designed to have a symmetric type signature
@@ -333,6 +424,7 @@ encodeLE = coerce New.encodeLE
 -- @since 2.0.6
 fromString :: String -> WindowsString
 fromString = coerce New.fromString
+#  endif
 #endif
 
 #ifdef WINDOWS_DOC
@@ -382,6 +474,7 @@ decodeWith = coerce New.decodeWith
 #endif
 -}
 
+#if MIN_VERSION_os_string(2,0,5)
 #ifdef WINDOWS_DOC
 -- | Like 'decodeUtf', except this mimics the behavior of the base library when doing filesystem
 -- operations, which does permissive UTF-16 encoding, where coding errors generate
@@ -399,6 +492,7 @@ decodeWith = coerce New.decodeWith
 #endif
 decodeLE :: PLATFORM_STRING -> IO String
 decodeLE = coerce New.decodeLE
+#endif
 
 #ifdef WINDOWS_DOC
 -- | Like 'decodeUtf', except this mimics the behavior of the base library when doing filesystem
@@ -446,6 +540,7 @@ fromBytes :: MonadThrow m
 fromBytes bs = coerce <$> New.fromBytes bs
 -- fromBytes = fromShortBytes . BS16.toShort
 
+#if MIN_VERSION_os_string(2,0,8)
 #ifdef WINDOWS_DOC
 -- | Constructs a platform string from a ShortByteString.
 --
@@ -466,6 +561,7 @@ fromShortBytes :: MonadThrow m
                => ShortByteString
                -> m PLATFORM_STRING
 fromShortBytes sbs = coerce <$> New.fromShortBytes sbs
+#endif
 
 -- #ifdef WINDOWS
 -- fromShortBytes bs =
@@ -476,6 +572,7 @@ fromShortBytes sbs = coerce <$> New.fromShortBytes sbs
 -- #endif
 
 #ifndef WINDOWS
+#  if MIN_VERSION_os_string(2,0,6)
 -- | Like 'fromBytes', but not in IO.
 --
 -- 'fromBytes' was designed to have a symmetric type signature
@@ -488,13 +585,16 @@ fromShortBytes sbs = coerce <$> New.fromShortBytes sbs
 fromBytestring :: ByteString -> PosixString
 fromBytestring = coerce New.fromBytestring
 -- fromBytestring = PosixString . BSP.toShort
+#  endif
 
+#  if MIN_VERSION_os_string(2,0,8)
 -- | Like 'fromShortBytes', but not in IO, similarly to 'fromBytestring'
 --
 -- @since 2.0.8
 fromShortBytestring :: ShortByteString -> PosixString
 fromShortBytestring = coerce New.fromShortBytestring
 -- fromShortBytestring = PosixString
+#  endif
 #endif
 
 
@@ -644,13 +744,31 @@ null = coerce New.null
 -- >>> length "abc"
 -- 3
 --
+-- Note: older versions of os-string return the
+-- length in bytes, rather than the length in
+-- code units. This will return the length in
+-- code units, regardless of the version of 
+-- os-string. For checking the length in Bytes,
+-- use `lengthBytes`.
 length :: PLATFORM_STRING -> Int
-length = coerce New.length
--- #ifdef WINDOWS
--- length = coerce New.numWord16
--- #else
 -- length = coerce New.length
--- #endif
+#ifdef WINDOWS
+length = coerce B16.numWord16
+#else
+length = coerce B8.length
+#endif
+
+-- | /O(1)/ The length in bytes of a `PLATFORM_STRING`.
+--
+-- If you want the number of code units, just
+-- use `length` instead.
+lengthBytes :: PLATFORM_STRING -> Int
+#ifdef WINDOWS
+lengthBytes = coerce B16.length
+#else
+lengthBytes = coerce B8.length
+#endif
+
 
 -- | /O(n)/ 'map' @f xs@ is the `PLATFORM_STRING` obtained by applying @f@ to each
 -- element of @xs@.

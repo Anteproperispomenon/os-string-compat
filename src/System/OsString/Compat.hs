@@ -54,6 +54,7 @@ module System.OsString.Compat
   , unsnoc
   , null
   , length
+  , lengthBytes
 
   -- * Transforming OsString
   , map
@@ -123,6 +124,9 @@ module System.OsString.Compat
   , count
   , findIndex
   , findIndices
+
+  -- * Coercions
+  , coercionToPlatformTypes
   ) where
 
 import Prelude ()

@@ -7,7 +7,9 @@ module System.OsString.Internal.Compat
   , unsafeEncodeUtf
   , encodeWith
   , encodeFS
+#if MIN_VERSION_os_string(2,0,5)
   , encodeLE
+#endif
   , osstr
   , empty
   , singleton
@@ -21,7 +23,9 @@ module System.OsString.Internal.Compat
   , decodeUtf
   , decodeWith
   , decodeFS
+#if MIN_VERSION_os_string(2,0,5)
   , decodeLE
+#endif
   , unpack
 
   -- * Word construction
@@ -41,6 +45,7 @@ module System.OsString.Internal.Compat
   , unsnoc
   , null
   , length
+  , lengthBytes
 
   -- * Transforming OsString
   , map
@@ -155,6 +160,12 @@ import "filepath"  System.OsString.Internal qualified as Old
 
 import System.OsString.Internal.Types.Compat
 
+#if defined(mingw32_HOST_OS)
+import System.OsString.Windows.Compat qualified as PF
+#else
+import System.OsString.Posix.Compat qualified as PF
+#endif
+
 import Control.Monad.Catch (MonadThrow)
 
 import GHC.Stack (HasCallStack)
@@ -182,6 +193,7 @@ unsafeEncodeUtf = coerce OS.unsafeEncodeUtf
 encodeFS :: String -> IO OsString
 encodeFS = coerce OS.encodeFS
 
+#if MIN_VERSION_os_string(2,0,5)
 -- | Like 'encodeUtf', except this mimics the behavior of the base library when doing string
 -- operations, which is:
 --
@@ -194,7 +206,7 @@ encodeFS = coerce OS.encodeFS
 -- to deeply evaluate the result to catch exceptions).
 encodeLE :: String -> IO OsString
 encodeLE = coerce OS.encodeLE
-
+#endif
 
 -- Like 'decodeUtf', except this mimics the behavior of the base library when doing filesystem
 -- operations (usually filepaths), which is:
@@ -213,6 +225,7 @@ encodeLE = coerce OS.encodeLE
 -- decodeFS :: OsString -> IO String
 -- decodeFS = coerce OS.encodeFS
 
+#if MIN_VERSION_os_string(2,0,5)
 -- | Like 'decodeUtf', except this mimics the behavior of the base library when doing string operations,
 -- which is:
 --
@@ -225,6 +238,7 @@ encodeLE = coerce OS.encodeLE
 -- to deeply evaluate the result to catch exceptions).
 decodeLE :: OsString -> IO String
 decodeLE = coerce OS.decodeLE
+#endif
 
 empty :: OsString
 empty = coerce OS.empty
@@ -294,7 +308,14 @@ null = coerce OS.null
 -- (@Word8@ on unix and @Word16@ on windows), not
 -- bytes.
 length :: OsString -> Int
-length = coerce OS.length
+length = coerce PF.length
+
+-- | /O(1)/ The length in bytes of an `OsString`.
+--
+-- This always returns the number of bytes,
+-- regardless of which platform you're on.
+lengthBytes :: OsString -> Int
+lengthBytes = coerce PF.lengthBytes
 
 -- | /O(n)/ 'map' @f xs@ is the OsString obtained by applying @f@ to each
 -- element of @xs@.
