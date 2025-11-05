@@ -16,8 +16,9 @@ jobs:
 
     strategy:
       matrix:
-        ghc: ['9.2.7', '9.4.8', '9.6.4', '9.8.4', '9.10.3', '9.12.2']
-        cabal: ['3.6.2.0', '3.10.2.1', 'recommended']
+        ghc: ['9.6.4', '9.8.4', '9.12.2'] # '9.2.7', '9.4.8', 
+        cabal: ['3.6.2.0', '3.10.2.1']
+        stack: ['2.9.3', '3.3.1']
         os: [ubuntu-latest, macOS-latest, windows-latest]
         
 
@@ -27,6 +28,7 @@ jobs:
       with:
         ghc-version: ${{ matrix.ghc }}
         cabal-version: ${{ matrix.cabal }}
+        enable-stack: true
 
     - name: Haskell GHC ${{ matrix.ghc }} on ${{ matrix.os }}
       uses: actions/cache@v3
@@ -42,9 +44,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cabal update
-        cabal build --only-dependencies --enable-tests --enable-benchmarks
+        stack test --only-dependencies # --enable-tests --enable-benchmarks
     - name: Build
-      run: cabal build --enable-tests --enable-benchmarks all
+      run: stack build # --enable-tests --enable-benchmarks all
     - name: Run tests
-      run: cabal test all
+      run: stack test # all
