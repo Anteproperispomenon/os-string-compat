@@ -37,15 +37,24 @@ e.g.
 ```yaml
 extra-deps:
 - git: https://github.com/Anteproperispomenon/os-string-compat
-  commit: 757d4823ded0f67f6377e6efe98ea79c8bea7853 # keep this up-to-date
+  commit: 9026e013c0403925a4ce06dd94d98d2ede8a636b # keep this up-to-date
 ```
 
 After that, instead of importing `System.OsString` etc, you import `System.OsString.Compat`
-etc... That is, you use the same module name, but add `.Compat` to the end.
+etc... That is, you use the same module name, but add `.Compat` to the end. Note that this
+package doesn't include compatibility modules for `System.OsString.Data.ByteString.Short` or
+`System.OsString.Data.ByteString.Short.Word16`, since you can just import them directly
+without needing to worry about compatibility with `filepath`; when they were included
+in `filepath`, they were known as "System.Os*Path*.Data.ByteString.Short" etc..., so their
+module names won't clash.
 
 ## To-Do
 
-I need to add some proper tests and maybe some benchmarks.
+Figure out a way to automatically test this package with multiple different
+versions of `filepath` and `os-string`. I've added tests from `os-string`,
+and I was able to find an issue that way, but testing it by manually changing
+the versions of `filepath` and `os-string` in `stack.yaml` is very long and
+tedious.
 
 ## Footnotes
 
