@@ -460,6 +460,16 @@ tests =
   , ("length abc" ,
    once $ B.length (B.pack [0xbb, 0x03]) == 2)
 #endif
+#if defined(POSIX)
+  , ("length in bytes (UTF-8)" ,
+   once $ B.lengthBytes (B.pack [0xbb, 0x03]) == 2)
+#elif defined(WIN) || (defined(OSWORD) && defined(mingw32_HOST_OS))
+  , ("length in bytes (UTF-16)" ,
+   once $ B.lengthBytes (B.pack [0xbb, 0x03]) == 4)
+#elif defined(OSWORD)
+  , ("length in bytes (UTF-8)" ,
+   once $ B.lengthBytes (B.pack [0xbb, 0x03]) == 2)
+#endif
   , ("count" ,
    property $ \(toElem -> c) x -> B.count c x === fromIntegral (length (elemIndices c (B.unpack x))))
   , ("filter" ,

@@ -192,6 +192,7 @@ where
 import Prelude (Int)
 
 import "os-string" System.OsString.Internal.Types qualified as NewT (PLATFORM_STRING(..), PLATFORM_WORD(..))
+import System.OsString.Internal.Types.Compat (PLATFORM_STRING(..), PLATFORM_WORD(..))
 
 import "os-string" System.OsString.MODULE_NAME hiding (length)
 
@@ -226,7 +227,7 @@ length = coerce B16.numWord16
 length = coerce B8.length
 #endif
 
--- | /O(1)/ The  in bytes of a `PLATFORM_STRING`.
+-- | /O(1)/ The length in bytes of a `PLATFORM_STRING`.
 --
 -- If you want the number of code units, just
 -- use `length` instead.
@@ -237,6 +238,7 @@ lengthBytes = coerce B16.length
 lengthBytes = coerce B8.length
 #endif
 
+-- End of (filepath >= 1.5.0) section
 #else
 
 import "os-string" System.OsString.MODULE_NAME qualified as New
