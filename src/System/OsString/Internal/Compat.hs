@@ -121,7 +121,8 @@ import System.OsString.Internal.Types.Compat
 
 #if MIN_VERSION_filepath(1,5,0)
 
-import Prelude ()
+import Prelude (Int)
+import Data.Coerce (coerce)
 
 -- These should have the same types as in
 -- System.OsString.Internal.Types.Compat, so
