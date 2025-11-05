@@ -18,34 +18,45 @@ jobs:
       matrix:
         ghc: ['9.6.4', '9.8.4', '9.12.2'] # '9.2.7', '9.4.8', 
         cabal: ['3.6.2.0', '3.10.2.1']
-        stack: ['2.9.3', '3.3.1']
+        stack: ['2.9.3', 'latest']
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        
 
+    name: Haskell GHC ${{ matrix.ghc }} sample
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-haskell@v1
-      with:
-        ghc-version: ${{ matrix.ghc }}
-        cabal-version: ${{ matrix.cabal }}
-        enable-stack: true
+      - uses: actions/checkout@v4
+      - name: Setup Haskell
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: ${{ matrix.cabal }}
+          stack-version: ${{ matrix.stack }}
+          enable-stacl: true
+      - run: stack test
 
-    - name: Haskell GHC ${{ matrix.ghc }} on ${{ matrix.os }}
-      uses: actions/cache@v3
-      env:
-        cache-name: cache-cabal
-      with:
-        path: ~/.cabal
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+#    steps:
+#    - uses: actions/checkout@v4
+#    - uses: actions/setup-haskell@v1
+#      with:
+#        ghc-version: ${{ matrix.ghc }}
+#        cabal-version: ${{ matrix.cabal }}
+#        enable-stack: true
 
-    - name: Install dependencies
-      run: |
-        stack test --only-dependencies # --enable-tests --enable-benchmarks
-    - name: Build
-      run: stack build # --enable-tests --enable-benchmarks all
-    - name: Run tests
-      run: stack test # all
+#    - name: Haskell GHC ${{ matrix.ghc }} on ${{ matrix.os }}
+#      uses: actions/cache@v3
+#      env:
+#        cache-name: cache-cabal
+#      with:
+#        path: ~/.cabal
+#        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
+#        restore-keys: |
+#          ${{ runner.os }}-build-${{ env.cache-name }}-
+#          ${{ runner.os }}-build-
+#          ${{ runner.os }}-
+
+#    - name: Install dependencies
+#      run: |
+#        stack test --only-dependencies # --enable-tests --enable-benchmarks
+#    - name: Build
+#      run: stack build # --enable-tests --enable-benchmarks all
+#    - name: Run tests
+#      run: stack test # all
