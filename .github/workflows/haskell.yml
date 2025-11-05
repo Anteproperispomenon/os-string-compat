@@ -30,7 +30,7 @@ jobs:
           ghc-version: ${{ matrix.ghc }}
           cabal-version: ${{ matrix.cabal }}
           stack-version: ${{ matrix.stack }}
-          enable-stacl: true
+          enable-stack: true
       - run: stack test
 
 #    steps:
