@@ -37,7 +37,7 @@ e.g.
 ```yaml
 extra-deps:
 - git: https://github.com/Anteproperispomenon/os-string-compat
-  commit: 7c469fedffdd598cbe6f7eee6a6b08d6ae831e7c # keep this up-to-date
+  commit: 3aa1635cdf899261a7cf073f2cb9c8773d5db71c # keep this up-to-date
 ```
 
 After that, instead of importing `System.OsString` etc, you import `System.OsString.Compat`
@@ -50,10 +50,8 @@ module names won't clash.
 
 ## To-Do
 
-Improve the GitHub Actions workflows so it can test it with different versions
-of GHC. I've gotten it to work with different versions of `filepath` and
-`os-string` by just manually creating different `stack.yaml` files and
-copying them over as needed, but so far they're all tested on GHC 9.8.4.
+Possibly add more versions of GHC to GitHub Actions workflows. Also possibly
+test compilation with cabal instead of stack.
 
 ## Footnotes
 
