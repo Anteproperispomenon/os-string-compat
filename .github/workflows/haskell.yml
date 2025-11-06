@@ -21,12 +21,29 @@ jobs:
         stack: ['latest']  # ['2.9.3', 'latest']
         os: [ubuntu-latest, macOS-latest, windows-latest]
         deps: ['stack-fp-141-os-202.yaml','stack-fp-141-os-207.yaml','stack-fp-143-os-201.yaml','stack-fp-154-os-204.yaml','stack-fp-154-os-208.yaml']
+        include:
+          - deps: 'stack-fp-141-os-202.yaml'
+            vern: 'fp-141 os-202'
+          - deps: 'stack-fp-141-os-207.yaml'
+            vern: 'fp-141 os-207'
+          - deps: 'stack-fp-143-os-201.yaml'
+            vern: 'fp-143 os-201'
+          - deps: 'stack-fp-154-os-204.yaml'
+            vern: 'fp-154 os-204'
+          - deps: 'stack-fp-154-os-204.yaml'
+            vern: 'fp-154 os-208'
+          - os: 'ubuntu-latest'
+            plat: 'linux'
+          - os: 'windows-latest'
+            plat: 'windows'
+          - os: 'macOS-latest'
+            plat: macOS
 
       #deps:
       #  filepath: ["filepath-1.5.4.0", "filepath-1.4.101.0", "filepath-1.4.301.0"]
       #  osstring: ["os-string-2.0.1", "os-string-2.0.4", "os-string-2.0.6", "os-string-2.0.8"]
 
-    name: Haskell GHC ${{ matrix.ghc }} ${{ matrix.os }}
+    name: GHC ${{ matrix.ghc }} ${{ matrix.plat }} ${{ matrix.vern }}
     continue-on-error: true
     steps:
       - uses: actions/checkout@v4
