@@ -40,42 +40,42 @@ jobs:
             plat: macOS
           # Manual additions
           - ghc: '9.10.3'
-            deps: 'alt-ghc/stack-ghc-9-10-a'
+            deps: 'alt-ghc/stack-ghc-9-10-a.yaml'
             vern: 'fp-154 os-208'
             os: ubuntu-latest
             plat: linux
             cabal: '3.10.2.1'
             stack: 'latest'
           - ghc: '9.10.3'
-            deps: 'alt-ghc/stack-ghc-9-10-a'
+            deps: 'alt-ghc/stack-ghc-9-10-a.yaml'
             vern: 'fp-154 os-208'
             os: windows-latest
             plat: windows
             cabal: '3.10.2.1'
             stack: 'latest'
           - ghc: '9.10.3'
-            deps: 'alt-ghc/stack-ghc-9-10-a'
+            deps: 'alt-ghc/stack-ghc-9-10-a.yaml'
             vern: 'fp-154 os-208'
             os: macOS-latest
             plat: macOS
             cabal: '3.10.2.1'
             stack: 'latest'
           - ghc: '9.10.3'
-            deps: 'alt-ghc/stack-ghc-9-10-b'
+            deps: 'alt-ghc/stack-ghc-9-10-b.yaml'
             vern: 'fp-143 os-208'
             os: ubuntu-latest
             plat: linux
             cabal: '3.10.2.1'
             stack: 'latest'
           - ghc: '9.10.3'
-            deps: 'alt-ghc/stack-ghc-9-10-b'
+            deps: 'alt-ghc/stack-ghc-9-10-b.yaml'
             vern: 'fp-143 os-208'
             os: windows-latest
             plat: windows
             cabal: '3.10.2.1'
             stack: 'latest'
           - ghc: '9.10.3'
-            deps: 'alt-ghc/stack-ghc-9-10-b'
+            deps: 'alt-ghc/stack-ghc-9-10-b.yaml'
             vern: 'fp-143 os-208'
             os: macOS-latest
             plat: macOS
