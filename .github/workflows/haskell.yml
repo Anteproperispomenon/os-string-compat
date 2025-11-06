@@ -38,6 +38,49 @@ jobs:
             plat: 'windows'
           - os: 'macOS-latest'
             plat: macOS
+          # Manual additions
+          - ghc: '9.10.3'
+            deps: 'alt-ghc/stack-ghc-9-10-a'
+            vern: 'fp-154 os-208'
+            os: ubuntu-latest
+            plat: linux
+            cabal: '3.10.2.1'
+            stack: 'latest'
+          - ghc: '9.10.3'
+            deps: 'alt-ghc/stack-ghc-9-10-a'
+            vern: 'fp-154 os-208'
+            os: windows-latest
+            plat: windows
+            cabal: '3.10.2.1'
+            stack: 'latest'
+          - ghc: '9.10.3'
+            deps: 'alt-ghc/stack-ghc-9-10-a'
+            vern: 'fp-154 os-208'
+            os: macOS-latest
+            plat: macOS
+            cabal: '3.10.2.1'
+            stack: 'latest'
+          - ghc: '9.10.3'
+            deps: 'alt-ghc/stack-ghc-9-10-b'
+            vern: 'fp-143 os-208'
+            os: ubuntu-latest
+            plat: linux
+            cabal: '3.10.2.1'
+            stack: 'latest'
+          - ghc: '9.10.3'
+            deps: 'alt-ghc/stack-ghc-9-10-b'
+            vern: 'fp-143 os-208'
+            os: windows-latest
+            plat: windows
+            cabal: '3.10.2.1'
+            stack: 'latest'
+          - ghc: '9.10.3'
+            deps: 'alt-ghc/stack-ghc-9-10-b'
+            vern: 'fp-143 os-208'
+            os: macOS-latest
+            plat: macOS
+            cabal: '3.10.2.1'
+            stack: 'latest'
 
       #deps:
       #  filepath: ["filepath-1.5.4.0", "filepath-1.4.101.0", "filepath-1.4.301.0"]
