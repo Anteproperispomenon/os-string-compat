@@ -76,7 +76,7 @@ tests:
     dependencies:
     - os-string-compat
     - bytestring  >=0.11.3.0
-    - QuickCheck  >=2.7 && <2.16
+    - QuickCheck  >=2.7 && <2.20
 
   encoding-tests:
     main:                Spec.hs
@@ -91,5 +91,5 @@ tests:
     - os-string-compat
     - bytestring  >=0.11.3.0
     - deepseq
-    - QuickCheck  >=2.7 && <2.16
+    - QuickCheck  >=2.7 && <2.20
     - quickcheck-classes-base ^>=0.6.2
