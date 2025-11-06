@@ -17,9 +17,8 @@
 #
 # snapshot: ./custom-snapshot.yaml
 # snapshot: https://example.com/snapshots/2024-01-01.yaml
-# https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2025/11/4.yaml
 snapshot:
-  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/24/18.yaml
+  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2025/11/4.yaml
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -43,8 +42,8 @@ packages:
 #
 # extra-deps: []
 extra-deps:
-- filepath-1.5.4.0
-# - filepath-1.4.301.0
+# - filepath-1.5.4.0
+- filepath-1.4.301.0
 - os-string-2.0.8
 
 # Override default flag values for project packages and extra-deps
