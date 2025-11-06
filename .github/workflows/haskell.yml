@@ -12,32 +12,60 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
+    strategy:
+      matrix:
+        ghc: ['9.8.4'] # ['9.6.4', '9.8.4', '9.12.2'] # '9.2.7', '9.4.8', 
+        cabal: ['3.10.2.1'] # ['3.6.2.0', '3.10.2.1']
+        stack: ['2.9.3', 'latest']
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+
+      #deps:
+      #  filepath: ["filepath-1.5.4.0", "filepath-1.4.101.0", "filepath-1.4.301.0"]
+      #  osstring: ["os-string-2.0.1", "os-string-2.0.4", "os-string-2.0.6", "os-string-2.0.8"]
+
+    name: Haskell GHC ${{ matrix.ghc }} ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-haskell@v1
-      with:
-        ghc-version: '8.10.3'
-        cabal-version: '3.2'
+      - uses: actions/checkout@v4
+      - name: Setup Haskell
+        uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: ${{ matrix.cabal }}
+          stack-version: ${{ matrix.stack }}
+          enable-stack: true
+      - name: Build dependencies
+        run: stack test --only-dependencies
+      - name: Build code
+        run: stack build --ghc-options "-Wno-unused-imports -Wno-identities -Wno-deprecations"
+      - name: Run Tests
+        run: stack test --ghc-options "-Wno-unused-imports -Wno-identities -Wno-deprecations"
 
-    - name: Cache
-      uses: actions/cache@v3
-      env:
-        cache-name: cache-cabal
-      with:
-        path: ~/.cabal
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
+#    steps:
+#    - uses: actions/checkout@v4
+#    - uses: actions/setup-haskell@v1
+#      with:
+#        ghc-version: ${{ matrix.ghc }}
+#        cabal-version: ${{ matrix.cabal }}
+#        enable-stack: true
 
-    - name: Install dependencies
-      run: |
-        cabal update
-        cabal build --only-dependencies --enable-tests --enable-benchmarks
-    - name: Build
-      run: cabal build --enable-tests --enable-benchmarks all
-    - name: Run tests
-      run: cabal test all
+#    - name: Haskell GHC ${{ matrix.ghc }} on ${{ matrix.os }}
+#      uses: actions/cache@v3
+#      env:
+#        cache-name: cache-cabal
+#      with:
+#        path: ~/.cabal
+#        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/*.cabal') }}-${{ hashFiles('**/cabal.project') }}
+#        restore-keys: |
+#          ${{ runner.os }}-build-${{ env.cache-name }}-
+#          ${{ runner.os }}-build-
+#          ${{ runner.os }}-
+
+#    - name: Install dependencies
+#      run: |
+#        stack test --only-dependencies # --enable-tests --enable-benchmarks
+#    - name: Build
+#      run: stack build # --enable-tests --enable-benchmarks all
+#    - name: Run tests
+#      run: stack test # all
