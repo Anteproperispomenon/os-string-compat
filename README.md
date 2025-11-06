@@ -23,7 +23,7 @@ just a `newtype` over `ShortByteString`[^1], so you can coerce between the two d
 `os-string` that are just coerced to work on `OsString`/`OsPath` from `1.4.100+`.
 
 Note that this package works for both pre-1.5 versions of `filepath` *and* post-1.5 versions
-of `filepath`. On newer versions, it just re-exports the functions from `os-string`, since
+of `filepath`. On newer versions, it just re-exports the functions[^3] from `os-string`, since
 `filepath` 1.5+ depends on `os-string`. Therefore, you can import `os-string-compat` instead
 of `os-string` and you can use the functions regardless of which version of `filepath` you
 have. If you're writing a library, you may want to depend on `os-string-compat` instead of
@@ -50,11 +50,10 @@ module names won't clash.
 
 ## To-Do
 
-Figure out a way to automatically test this package with multiple different
-versions of `filepath` and `os-string`. I've added tests from `os-string`,
-and I was able to find an issue that way, but testing it by manually changing
-the versions of `filepath` and `os-string` in `stack.yaml` is very long and
-tedious.
+Improve the GitHub Actions workflows so it can test it with different versions
+of GHC. I've gotten it to work with different versions of `filepath` and
+`os-string` by just manually creating different `stack.yaml` files and
+copying them over as needed, but so far they're all tested on GHC 9.8.4.
 
 ## Footnotes
 
@@ -62,3 +61,12 @@ tedious.
 [^2]: Yes, there is a difference between Windows `OsString` and POSIX `OsString`,
       but so long as you coerce from `WindowsString` to `WindowsString` or 
       `PosixString` to `PosixString`, you should be okay.
+[^3]: There are a few functions that have different definitions depending on the
+      version of `os-string`, or only exist in newer versions of `os-string`.
+      For the former, such as `length`, this package exports its own version
+      based on newer versions of `length` from `os-string`. That way, its
+      behaviour is not dependent on the version of `os-string` used. For the
+      latter, more obscure functions just aren't exported if the version of
+      `os-string` isn't new enough, while others (especially functions that
+      the test suites rely on) are defined here, with their definitions just
+      copied from newer versions of `os-string`.
