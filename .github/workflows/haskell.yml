@@ -150,6 +150,9 @@ jobs:
         run: stack build --ghc-options "-Wno-unused-imports -Wno-identities -Wno-deprecations"
       - name: Run Tests
         run: stack test --ghc-options "-Wno-unused-imports -Wno-identities -Wno-deprecations"
+      # Maybe find a way to only benchmark a couple runs.
+      # - name: Run benchmarks
+      #   run: stack build --bench
       - name: Revert stack.yaml
         run: |
           rm stack.yaml

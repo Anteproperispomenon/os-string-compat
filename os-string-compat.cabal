@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           os-string-compat
-version:        0.1.0.0
+version:        1.0.0
 synopsis:       Compatibility layer for os-string
 description:    Please see the README on GitHub at <https://github.com/Anteproperispomenon/os-string-compat#readme>
 category:       System
@@ -89,7 +89,7 @@ test-suite bytestring-tests
       TypeApplications
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      QuickCheck >=2.7 && <2.16
+      QuickCheck >=2.7 && <2.20
     , base >=4.12 && <5
     , bytestring >=0.11.3.0
     , exceptions
@@ -122,7 +122,7 @@ test-suite encoding-tests
       TypeApplications
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      QuickCheck >=2.7 && <2.16
+      QuickCheck >=2.7 && <2.20
     , base >=4.12 && <5
     , bytestring >=0.11.3.0
     , deepseq
@@ -132,3 +132,39 @@ test-suite encoding-tests
     , os-string-compat
     , quickcheck-classes-base >=0.6.2 && <0.7
   default-language: Haskell2010
+
+benchmark bench
+  type: exitcode-stdio-1.0
+  main-is: Bench.hs
+  other-modules:
+      BenchOsString
+      BenchPosixString
+      BenchWindowsString
+      Paths_os_string_compat
+  autogen-modules:
+      Paths_os_string_compat
+  hs-source-dirs:
+      bench
+  default-extensions:
+      ImportQualifiedPost
+      LambdaCase
+      MultiWayIf
+      OverloadedStrings
+      PackageImports
+      ScopedTypeVariables
+      TupleSections
+      TypeApplications
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -O2 -with-rtsopts=-A32m
+  build-depends:
+      base >=4.12 && <5
+    , bytestring
+    , deepseq
+    , exceptions
+    , filepath >=1.4.101.0
+    , os-string >=2.0.1
+    , os-string-compat
+    , random
+    , tasty-bench
+  default-language: Haskell2010
+  if impl(ghc >= 8.6)
+    ghc-options: -fproc-alignment=64

@@ -1,5 +1,5 @@
 name:                os-string-compat
-version:             0.1.0.0
+version:             1.0.0
 github:              "Anteproperispomenon/os-string-compat"
 license:             BSD-3-Clause
 author:              "David Wilson"
@@ -93,3 +93,21 @@ tests:
     - deepseq
     - QuickCheck  >=2.7 && <2.20
     - quickcheck-classes-base ^>=0.6.2
+
+benchmarks:
+  bench:
+    main: Bench.hs
+    source-dirs: bench
+    ghc-options: 
+      - -O2 
+      - "-with-rtsopts=-A32m" 
+    when:
+      - condition: impl(ghc >= 8.6)
+        ghc-options: -fproc-alignment=64
+    dependencies:
+      - os-string-compat
+      - bytestring
+      - deepseq
+      - tasty-bench
+      - random
+  
