@@ -1,5 +1,8 @@
 # os-string-compat
 
+[![GitHub Actions status](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell.yml/badge.svg)](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell.yml)
+[![GitHub Actions status](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell_cabal.yml/badge.svg)](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell_cabal.yml)
+
 ## Intro and Purpose
 
 This is a compatibility layer over [os-string](https://hackage.haskell.org/package/os-string)
@@ -37,7 +40,7 @@ e.g.
 ```yaml
 extra-deps:
 - git: https://github.com/Anteproperispomenon/os-string-compat
-  commit: 3aa1635cdf899261a7cf073f2cb9c8773d5db71c # keep this up-to-date
+  commit: 3ae529a9c9c0417d6188c2eaaa27693940412c9c # keep this up-to-date
 ```
 
 After that, instead of importing `System.OsString` etc, you import `System.OsString.Compat`
@@ -50,8 +53,9 @@ module names won't clash.
 
 ## To-Do
 
-Possibly add more versions of GHC to GitHub Actions workflows. Also possibly
-test compilation with cabal instead of stack.
+Possibly add more versions of GHC to GitHub Actions workflows. Also look into how to
+use GitHub Actions to automate building documentation/packages for Hackage. Also,
+figure out how to cache dependencies for the Stack workflow.
 
 ## Footnotes
 

@@ -121,7 +121,7 @@ withPosixString = withFilePathPosix
 
 #  if MIN_VERSION_os_string(2,0,5)
 -- | Alternate version of `withPosixString` from
---   newer versions of 
+--   newer versions of os-string.
 withPosixString' :: String -> (CStringLen -> IO a) -> IO a
 withPosixString'= New.withPosixString'
 
