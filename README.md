@@ -34,7 +34,13 @@ have. If you're writing a library, you may want to depend on `os-string-compat` 
 
 ## Usage
 
-At the moment, you'll have to import this package by adding it to your `stack.yaml` file.
+### Stack
+
+If this package still isn't available on Hackage (i.e. if the link 
+<https://hackage.haskell.org/package/os-string-compat> doesn't lead to
+a valid package), you'll have to import this package by adding it to
+your `stack.yaml` file. You'll also have to do this if you want to
+use an exact *revision* of the package.
 e.g.
 
 ```yaml
@@ -42,6 +48,29 @@ extra-deps:
 - git: https://github.com/Anteproperispomenon/os-string-compat
   commit: 3ae529a9c9c0417d6188c2eaaa27693940412c9c # keep this up-to-date
 ```
+
+If this package **is** available on Hackage, you may still have to add
+it to the `extra-deps` field in `staqck.yaml`, but you won't have to 
+give an exact commit. You can just say e.g.
+
+```yaml
+extra-deps:
+- os-string-compat-1.0.0
+```
+
+### Cabal
+
+If this package has been added to Hackage, you should be able
+to run `cabal update` and then add `os-string-compat >= 1.0.0`
+to the `build-depends` field in your `<package_name>.cabal` file.
+
+If it still isn't available on Hackage, then you'll probably have
+to download, build, and install the package yourself. It's been
+a while since I last used Cabal directly, so I'm not sure of the
+exact process. Alternatively, you can just use Stack instead of
+Cabal and follow the process above. 
+
+### Using the Modules
 
 After that, instead of importing `System.OsString` etc, you import `System.OsString.Compat`
 etc... That is, you use the same module name, but add `.Compat` to the end. Note that this
