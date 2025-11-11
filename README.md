@@ -1,5 +1,9 @@
 # os-string-compat
 
+[![GitHub Actions status](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell.yml/badge.svg)](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell.yml)
+
+[![GitHub Actions status](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell_cabal.yml/badge.svg)](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell_cabal.yml)
+
 ## Intro and Purpose
 
 This is a compatibility layer over [os-string](https://hackage.haskell.org/package/os-string)

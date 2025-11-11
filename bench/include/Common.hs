@@ -1,21 +1,21 @@
 -- Taken from os-string
 
-import           Control.DeepSeq                       (force)
-import           Data.Foldable                         (foldMap)
-import           Data.Maybe                            (listToMaybe, fromJust)
-import           Data.Monoid
-import           Data.String
-import           Prelude                               hiding (words, head, tail)
+import Control.DeepSeq                       (force)
+import Data.Foldable                         (foldMap)
+import Data.Maybe                            (listToMaybe, fromJust)
+import Data.Monoid
+import Data.String
+import Prelude                               hiding (words, head, tail)
 
-import           Test.Tasty.Bench
-import           Data.ByteString.Builder
-import           Data.ByteString.Builder.Extra         (byteStringCopy, byteStringInsert, intHost)
-import           Data.ByteString.Builder.Internal      (ensureFree)
-import           Data.ByteString.Builder.Prim          (BoundedPrim, FixedPrim, (>$<))
-import qualified Data.ByteString.Builder.Prim          as P
-import qualified Data.ByteString.Builder.Prim.Internal as PI
+import Test.Tasty.Bench
+import Data.ByteString.Builder
+import Data.ByteString.Builder.Extra         (byteStringCopy, byteStringInsert, intHost)
+import Data.ByteString.Builder.Internal      (ensureFree)
+import Data.ByteString.Builder.Prim          (BoundedPrim, FixedPrim, (>$<))
+import Data.ByteString.Builder.Prim          qualified as P
+import Data.ByteString.Builder.Prim.Internal qualified as PI
 
-import           Foreign
+import Foreign
 
 import System.Random
 import Data.Bifunctor (first)
