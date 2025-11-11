@@ -6,12 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to the
 [Haskell Package Versioning Policy](https://pvp.haskell.org/).
 
-## Unreleased
+## [1.0.0] - 2025-11-11
 
-## ??? - 2025-10-26
+### Added
+
+- Added proper tests and benchmarks.
+- Added equivalent functions to those in `os-string`.
+
+## Pre-Release - 2025-10-26
 
 ### Changed
 
+- Created the repository.
 - First (public) "release".
 - Added an actual readme.
-
