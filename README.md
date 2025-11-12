@@ -50,7 +50,7 @@ extra-deps:
 ```
 
 If this package **is** available on Hackage, you may still have to add
-it to the `extra-deps` field in `staqck.yaml`, but you won't have to 
+it to the `extra-deps` field in `stack.yaml`, but you won't have to 
 give an exact commit. You can just say e.g.
 
 ```yaml
