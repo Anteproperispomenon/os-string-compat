@@ -64,11 +64,21 @@ If this package has been added to Hackage, you should be able
 to run `cabal update` and then add `os-string-compat >= 1.0.0`
 to the `build-depends` field in your `<package_name>.cabal` file.
 
-If it still isn't available on Hackage, then you'll probably have
-to download, build, and install the package yourself. It's been
-a while since I last used Cabal directly, so I'm not sure of the
-exact process. Alternatively, you can just use Stack instead of
-Cabal and follow the process above. 
+If it still isn't available on Hackage, then you'll have to
+add it to your `cabal.project` file. I haven't used this feature
+myself, but it'll probably be something like this:
+
+```
+packages: .
+
+source-repository-package
+    type: git
+    location: https://github.com/Anteproperispomenon/os-string-compat
+    tag: 3ae529a9c9c0417d6188c2eaaa27693940412c9c
+```
+
+(See [cabal docs](https://cabal.readthedocs.io/en/3.4/cabal-project.html)
+ for more info)
 
 ### Using the Modules
 

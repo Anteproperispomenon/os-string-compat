@@ -13,7 +13,7 @@ documentation, except for a few functions/types that
 are found in the older versions of "filepath".
 
 For more information on `OsString`s in general, look
-at the package [os-string]<https://hackage.haskell.org/package/os-string>.
+at the package [os-string](https://hackage.haskell.org/package/os-string).
 
 -}
 
