@@ -28,6 +28,8 @@ on macOS on GitHub Actions, it failed to install GHC. This seens to be because A
 for mac wasn't added until GHC 8.10.4 (and improved thereafter). To reflect this, macOS is
 tested on the oldest version of GHC that still successfully installs on GitHub.
 
+Currently, the oldest version of GHC that is able to compile this package on macOS is `9.8.4`.
+
 ## Intro and Purpose
 
 This is a compatibility layer over [os-string](https://hackage.haskell.org/package/os-string)
