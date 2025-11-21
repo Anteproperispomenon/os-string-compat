@@ -21,6 +21,13 @@ This may be because I'm trying to compile the documentation on Windows. I might 
 at some point to auto-generate the docs with GitHub Actions... once I understand how
 to do that.
 
+## Note on macOS
+
+This package may not work with older versions of GHC on macOS; when testing GHC 8.10.1
+on macOS on GitHub Actions, it failed to install GHC. This seens to be because ARM support
+for mac wasn't added until GHC 8.10.4 (and improved thereafter). To reflect this, macOS is
+tested on GHC 8.10.4 rather than GHC 8.10.1, which Windows and Linux are tested on.
+
 ## Intro and Purpose
 
 This is a compatibility layer over [os-string](https://hackage.haskell.org/package/os-string)
