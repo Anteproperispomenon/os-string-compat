@@ -34,7 +34,7 @@ default-extensions:
 - TypeApplications
 
 dependencies:
-- base >= 4.12 && < 5
+- base >= 4.14 && < 5
 - os-string >= 2.0.1 && <= 2.1
 - filepath >= 1.4.101.0 && <= 1.6
 - bytestring >= 0.11.3.0 && < 0.13
