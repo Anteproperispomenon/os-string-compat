@@ -33,7 +33,7 @@ jobs:
           - os: windows-latest
             ghc-version: '8.10.1'
           - os: macos-latest
-            ghc-version: '8.10.4'
+            ghc-version: '8.10.5'
 
     steps:
       - uses: actions/checkout@v4
