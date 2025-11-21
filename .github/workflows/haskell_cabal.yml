@@ -36,8 +36,6 @@ jobs:
             ghc-version: '9.2.8'
           - os: macos-latest
             ghc-version: '9.4.8'
-          - os: macos-latest
-            ghc-version: '9.6.3'
 
     steps:
       - uses: actions/checkout@v4
