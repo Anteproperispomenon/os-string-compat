@@ -34,7 +34,7 @@ default-extensions:
 - TypeApplications
 
 dependencies:
-- base >= 4.14 && < 5
+- base >= 4.14 && < 4.23 # following upper bound on os-string/filepath
 - os-string >= 2.0.1 && <= 2.1
 - filepath >= 1.4.101.0 && <= 1.6
 - bytestring >= 0.11.3.0 && < 0.13
@@ -52,7 +52,7 @@ ghc-options:
 - -Wredundant-constraints
 
 tested-with:
-  - GHC == 9.2.8 || == 9.8.4 || == 9.10.3 || == 9.12.2 # || == 8.10.1
+  - GHC == 9.2.8 || == 9.8.4 || == 9.10.3 || == 9.12.2 || == 8.10.1
 
 library:
   source-dirs: src

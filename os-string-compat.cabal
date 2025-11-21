@@ -18,7 +18,7 @@ license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
 tested-with:
-    GHC == 9.2.8 || == 9.8.4 || == 9.10.3 || == 9.12.2
+    GHC == 9.2.8 || == 9.8.4 || == 9.10.3 || == 9.12.2 || == 8.10.1
 extra-source-files:
     README.md
     src/System/OsString/include/Common.hs
@@ -57,7 +57,7 @@ library
       TypeApplications
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
-      base >=4.14 && <5
+      base >=4.14 && <4.23
     , bytestring >=0.11.3.0 && <0.13
     , exceptions >=0.10.5 && <0.12
     , filepath >=1.4.101.0 && <=1.6
@@ -93,7 +93,7 @@ test-suite bytestring-tests
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck >=2.7 && <2.20
-    , base >=4.14 && <5
+    , base >=4.14 && <4.23
     , bytestring >=0.11.3.0 && <0.13
     , exceptions >=0.10.5 && <0.12
     , filepath >=1.4.101.0 && <=1.6
@@ -126,7 +126,7 @@ test-suite encoding-tests
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       QuickCheck >=2.7 && <2.20
-    , base >=4.14 && <5
+    , base >=4.14 && <4.23
     , bytestring >=0.11.3.0
     , deepseq >=1.4.4 && <1.6
     , exceptions >=0.10.5 && <0.12
@@ -159,7 +159,7 @@ benchmark bench
       TypeApplications
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -O2 -with-rtsopts=-A32m
   build-depends:
-      base >=4.14 && <5
+      base >=4.14 && <4.23
     , bytestring >=0.11.3.0 && <0.13
     , deepseq >=1.4.4 && <1.6
     , exceptions >=0.10.5 && <0.12
