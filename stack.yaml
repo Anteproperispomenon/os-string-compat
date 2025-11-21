@@ -47,7 +47,7 @@ extra-deps:
 # - exceptions-0.10.5
 # - filepath-1.5.4.0
 # - filepath-1.4.301.0
-# - os-string-2.0.5
+# - os-string-2.0.8
 
 # Override default flag values for project packages and extra-deps
 # flags: {}
