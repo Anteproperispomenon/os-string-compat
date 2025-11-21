@@ -3,6 +3,24 @@
 [![GitHub Actions status](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell.yml/badge.svg)](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell.yml)
 [![GitHub Actions status](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell_cabal.yml/badge.svg)](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell_cabal.yml)
 
+## Note on Hackage
+
+I haven't been able to get Stack/Cabal to generate versions of the documentation that
+properly link to entities from other packages on Hackage. Unfortunately, this means
+that you won't see documentation for functions that are just included directly from
+other packages, and you won't see links to their source code. To (partially) get around this,
+I ran Haddock while Stack was using an older version of [filepath](https://hackage.haskell.org/package/filepath)
+so that there would be more visible definitions. Hopefully this will improve the
+documentation.
+
+If you want proper documentation of functions (and types), I recommend just checking out
+[os-string](https://hackage.haskell.org/package/os-string), since it shouldn't have
+that problem.
+
+This may be because I'm trying to compile the documentation on Windows. I might try
+at some point to auto-generate the docs with GitHub Actions... once I understand how
+to do that.
+
 ## Intro and Purpose
 
 This is a compatibility layer over [os-string](https://hackage.haskell.org/package/os-string)
