@@ -1,8 +1,9 @@
 {-# LANGUAGE CPP #-}
 
 module System.OsString.Encoding.Compat
+  ( 
   -- * Types
-  ( EncodingException(..)
+    EncodingException(..)
   , showEncodingException
 
   -- * UCS-2

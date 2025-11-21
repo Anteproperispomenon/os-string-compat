@@ -2,8 +2,9 @@
 {-# LANGUAGE KindSignatures #-}
 
 module System.OsString.Internal.Compat
+  ( 
   -- * OsString construction
-  ( encodeUtf
+    encodeUtf
   , unsafeEncodeUtf
   , encodeWith
   , encodeFS

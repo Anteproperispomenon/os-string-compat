@@ -18,8 +18,9 @@ at the package [os-string](https://hackage.haskell.org/package/os-string).
 -}
 
 module System.OsString.Compat
+  ( 
   -- * String types
-  ( OsString
+    OsString
 
   -- * OsString construction
   , encodeUtf
