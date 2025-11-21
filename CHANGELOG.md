@@ -6,7 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to the
 [Haskell Package Versioning Policy](https://pvp.haskell.org/).
 
-## [1.0.0] - 2025-11-11
+## [1.0.0] - 2025-11-21
+
+### Fixed
+
+- Fixed lower bound on base
+- Fixed lower bounds on dependencies for tests
+- Tested with more versions of GHC on macOS
+- Fixed some documentation to work with more versions of Haddock
+
+## Almost-Release - 2025-11-11
 
 ### Added
 
