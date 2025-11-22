@@ -1,5 +1,5 @@
 name:                os-string-compat
-version:             1.0.0
+version:             1.0.1
 github:              "Anteproperispomenon/os-string-compat"
 license:             BSD-3-Clause
 author:              "David Wilson"
@@ -10,6 +10,7 @@ extra-source-files:
 - README.md
 - src/System/OsString/include/Common.hs
 - test/bytestring/Properties/include/Common.hs
+- CHANGELOG.md
 
 extra-doc-files:
 - CHANGELOG.md

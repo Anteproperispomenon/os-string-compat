@@ -73,7 +73,7 @@ e.g.
 ```yaml
 extra-deps:
 - git: https://github.com/Anteproperispomenon/os-string-compat
-  commit: 3ae529a9c9c0417d6188c2eaaa27693940412c9c # keep this up-to-date
+  commit: 3ea425f103d2f14e3f9f7f713eb4291fee5b38a4 # keep this up-to-date
 ```
 
 If this package **is** available on Hackage, you may still have to add
@@ -82,13 +82,13 @@ give an exact commit. You can just say e.g.
 
 ```yaml
 extra-deps:
-- os-string-compat-1.0.0
+- os-string-compat-1.0.1
 ```
 
 ### Cabal
 
 If this package has been added to Hackage, you should be able
-to run `cabal update` and then add `os-string-compat >= 1.0.0`
+to run `cabal update` and then add `os-string-compat >= 1.0.1`
 to the `build-depends` field in your `<package_name>.cabal` file.
 
 If it still isn't available on Hackage, then you'll have to
@@ -101,7 +101,7 @@ packages: .
 source-repository-package
     type: git
     location: https://github.com/Anteproperispomenon/os-string-compat
-    tag: 3ae529a9c9c0417d6188c2eaaa27693940412c9c
+    tag: 3ea425f103d2f14e3f9f7f713eb4291fee5b38a4
 ```
 
 (See [cabal docs](https://cabal.readthedocs.io/en/3.4/cabal-project.html)

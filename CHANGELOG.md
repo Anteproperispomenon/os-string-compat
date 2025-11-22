@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to the
 [Haskell Package Versioning Policy](https://pvp.haskell.org/).
 
-## [1.0.0] - 2025-11-21
+## [1.0.1] - 2025-11-22
+
+First actual release.
 
 ### Fixed
 
@@ -15,7 +17,12 @@ and this project adheres to the
 - Tested with more versions of GHC on macOS
 - Fixed some documentation to work with more versions of Haddock
 
-## Almost-Release - 2025-11-11
+## [1.0.0] - 2025-11-11
+
+This was originally supposed to be the first actual release,
+but I wound up changing some things, but the changelog on
+Hackage wouldn't update. So I just decided to bump to version
+1.0.1.
 
 ### Added
 

@@ -5,7 +5,7 @@ cabal-version: 2.2
 -- see: https://github.com/sol/hpack
 
 name:           os-string-compat
-version:        1.0.0
+version:        1.0.1
 synopsis:       Compatibility layer for os-string
 description:    Please see the README on GitHub at <https://github.com/Anteproperispomenon/os-string-compat#readme>
 category:       System
@@ -23,6 +23,7 @@ extra-source-files:
     README.md
     src/System/OsString/include/Common.hs
     test/bytestring/Properties/include/Common.hs
+    CHANGELOG.md
 extra-doc-files:
     CHANGELOG.md
 
