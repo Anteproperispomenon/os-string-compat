@@ -3,6 +3,33 @@
 [![GitHub Actions status](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell.yml/badge.svg)](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell.yml)
 [![GitHub Actions status](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell_cabal.yml/badge.svg)](https://github.com/Anteproperispomenon/os-string-compat/actions/workflows/haskell_cabal.yml)
 
+## Note on Hackage
+
+I haven't been able to get Stack/Cabal to generate versions of the documentation that
+properly link to entities from other packages on Hackage. Unfortunately, this means
+that you won't see documentation for functions that are just included directly from
+other packages, and you won't see links to their source code. To (partially) get around this,
+I ran Haddock while Stack was using an older version of [filepath](https://hackage.haskell.org/package/filepath)
+so that there would be more visible definitions. Hopefully this will improve the
+documentation.
+
+If you want proper documentation of functions (and types), I recommend just checking out
+[os-string](https://hackage.haskell.org/package/os-string), since it shouldn't have
+that problem.
+
+This may be because I'm trying to compile the documentation on Windows. I might try
+at some point to auto-generate the docs with GitHub Actions... once I understand how
+to do that.
+
+## Note on macOS
+
+This package may not work with older versions of GHC on macOS; when testing GHC 8.10.1
+on macOS on GitHub Actions, it failed to install GHC. This seens to be because ARM support
+for mac wasn't added until GHC 8.10.4 (and improved thereafter). To reflect this, macOS is
+tested on the oldest version of GHC that still successfully installs on GitHub.
+
+Currently, the oldest version of GHC that is able to compile this package on macOS is `9.2.8`.
+
 ## Intro and Purpose
 
 This is a compatibility layer over [os-string](https://hackage.haskell.org/package/os-string)
@@ -34,7 +61,13 @@ have. If you're writing a library, you may want to depend on `os-string-compat` 
 
 ## Usage
 
-At the moment, you'll have to import this package by adding it to your `stack.yaml` file.
+### Stack
+
+If this package still isn't available on Hackage (i.e. if the link 
+<https://hackage.haskell.org/package/os-string-compat> doesn't lead to
+a valid package), you'll have to import this package by adding it to
+your `stack.yaml` file. You'll also have to do this if you want to
+use an exact *revision* of the package.
 e.g.
 
 ```yaml
@@ -42,6 +75,39 @@ extra-deps:
 - git: https://github.com/Anteproperispomenon/os-string-compat
   commit: 3ae529a9c9c0417d6188c2eaaa27693940412c9c # keep this up-to-date
 ```
+
+If this package **is** available on Hackage, you may still have to add
+it to the `extra-deps` field in `stack.yaml`, but you won't have to 
+give an exact commit. You can just say e.g.
+
+```yaml
+extra-deps:
+- os-string-compat-1.0.0
+```
+
+### Cabal
+
+If this package has been added to Hackage, you should be able
+to run `cabal update` and then add `os-string-compat >= 1.0.0`
+to the `build-depends` field in your `<package_name>.cabal` file.
+
+If it still isn't available on Hackage, then you'll have to
+add it to your `cabal.project` file. I haven't used this feature
+myself, but it'll probably be something like this:
+
+```
+packages: .
+
+source-repository-package
+    type: git
+    location: https://github.com/Anteproperispomenon/os-string-compat
+    tag: 3ae529a9c9c0417d6188c2eaaa27693940412c9c
+```
+
+(See [cabal docs](https://cabal.readthedocs.io/en/3.4/cabal-project.html)
+ for more info)
+
+### Using the Modules
 
 After that, instead of importing `System.OsString` etc, you import `System.OsString.Compat`
 etc... That is, you use the same module name, but add `.Compat` to the end. Note that this

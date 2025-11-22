@@ -1,0 +1,7 @@
+packages: os-string-compat.cabal
+
+package os-string
+  documentation: True
+
+package *
+  documentation: True

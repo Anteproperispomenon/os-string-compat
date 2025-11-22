@@ -1,6 +1,6 @@
 {-|
 Module      : System.OsString.Compat
-Copyright   : (c) 2025 David Wilson
+Copyright   : (c) 2021 Julian Ospald, 2025 David Wilson
 License     : BSD-3-Clause (see the LICENSE file)
 
 Compatibility layer for versions of filepath that
@@ -12,11 +12,15 @@ Note: All documentation is taken from the os-string
 documentation, except for a few functions/types that 
 are found in the older versions of "filepath".
 
+For more information on `OsString`s in general, look
+at the package [os-string](https://hackage.haskell.org/package/os-string).
+
 -}
 
 module System.OsString.Compat
+  ( 
   -- * String types
-  ( OsString
+    OsString
 
   -- * OsString construction
   , encodeUtf
